@@ -6,8 +6,8 @@ public class Coordenador extends Usuario{
 		super();
 	}
 
-	public Coordenador(int idUser, String nome, String cpf, String tipo, String senha) {
-		super(idUser, nome, cpf, tipo, senha);
+	public Coordenador(int idUser, String nome, String cpf, String tipo, String senha, String email) {
+		super(idUser, nome, cpf, tipo, senha, email);
 	}
 	
 	// Classe somento com os metodos, sem atributos

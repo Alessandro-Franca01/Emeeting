@@ -1,8 +1,12 @@
 package controle;
 
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.AbstractAction;
+
 //import java.sql.Statement;
 import java.sql.PreparedStatement;
 
@@ -34,21 +38,49 @@ public class Validacao {
 	}
 	
 	public static int verificarUsuario(String cpf, Connection con, ResultSet pesquisa) {
-		int idPessoa = 0;
+		int idUsuario = 0;
 		try {
 			PreparedStatement pst = con.prepareStatement("SELECT IDUSUARIO FROM USUARIO "
 	                  + "WHERE CPF = ? ");
 			pst.setString(1, cpf);
 			pesquisa = pst.executeQuery();
 			if (pesquisa.next()) { 
-				idPessoa = pesquisa.getInt("IDPESSOA");
+				idUsuario = pesquisa.getInt("IDUSUARIO");
+				System.out.println("O id do usuario é: "+idUsuario);
 			}else {
 				System.out.println("Usuário não cadastrado!");
 			}
 		}catch(SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("O id do usuario é: "+idPessoa);
-		return idPessoa;
+		return idUsuario;
 	}
+	
+	public static int verificarSala( Connection con, ResultSet pesquisa, String nomeLocal, 
+									String nomeSala, String cidade, String estado) {
+		int idSala = 0;
+		try {// Erro na query, corrigir ainda hoje!!
+			PreparedStatement pst = con.prepareStatement("SELECT NOME_LOCAL, CIDADE, NOME_SALA, IDSALA "
+														+"FROM LOCAL "
+														+"INNER JOIN SALA "
+														+"ON IDLOCAL = ID_LOCAL "
+														+"WHERE NOME_LOCAL = ? "
+														+"AND WHERE NOME_SALA = ? "
+														+"WHERE CIDADE = ? ");
+			pst.setString(1, nomeLocal);
+			pst.setString(2, nomeSala);
+			pst.setString(3, cidade);
+			if (pesquisa.next()) { 
+				idSala = pesquisa.getInt("IDSALA");
+				System.out.println("O id do usuario é: "+idSala);
+			}else {
+				System.out.println("Usuário não cadastrado!");
+			}
+		}catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+			
+		return idSala;
+	}
+	
 }

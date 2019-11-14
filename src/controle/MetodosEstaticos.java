@@ -13,6 +13,7 @@ import modelo.Comum;
 import modelo.Coordenador;
 import modelo.Gestor;
 import modelo.Reuniao;
+import modelo.Sala;
 import modelo.Usuario;
 import view.TelaUsuarioComum;
 import view.TelaUsuarioCoordenador;
@@ -22,31 +23,6 @@ import controle.Validacao;
 
 public class MetodosEstaticos {
 
-	public static Usuario logando(String nome, String senha, Connection c, Statement st, ResultSet r) {
-		Usuario u = new Usuario();
-		try {
-			st = c.createStatement();
-			r = st.executeQuery("SELECT * FROM USUARIO");
-			while(r.next()) {
-				if(nome.equalsIgnoreCase(r.getString("NOME")) && senha.equalsIgnoreCase(r.getString("SENHA"))) { 
-					u.setNome(r.getString("NOME"));
-					u.setSenha(r.getString("SENHA"));
-					u.setCpf(r.getString("CPF"));
-					u.setTipo(r.getString("TIPO_USUARIO"));
-					u.setIdUser(r.getInt("IDUSUARIO"));
-					break;
-				}
-			}
-			if(u.getNome() != null) {
-				System.out.println("Você ESTA logado!");
-			}else 
-				System.out.println("Você NAO esta logado!");
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return u;
-	}
 	// Fazer ajustes no banco e no metodo ( add coluna email, etc) - alteração no banco feito!
 	public static Usuario logandoGui(Connection coneccao, Statement st, ResultSet resultSet, String nome, String senha) {
 		Usuario user = null;
@@ -60,7 +36,7 @@ public class MetodosEstaticos {
 					// Verificar o tipo do Usuario, depois ir para a tela correspondente!
 					if(tipoUsuario.equalsIgnoreCase("COMUM")) {
 						user = new Comum(resultSet.getInt("IDUSUARIO"), resultSet.getString("NOME"), resultSet.getString("CPF"), 
-										tipoUsuario, resultSet.getString("SENHA"));
+								tipoUsuario, resultSet.getString("SENHA"), resultSet.getString("EMAIL"));
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
@@ -73,10 +49,10 @@ public class MetodosEstaticos {
 							e.printStackTrace();
 						}
 					}
-					if(tipoUsuario.equalsIgnoreCase("COORDENADOR")) {
+					else if(tipoUsuario.equalsIgnoreCase("COORDENADOR")) {
 						// vou instaciar, usuario coordenador e abrir a tela dele
 						user = new Coordenador(resultSet.getInt("IDUSUARIO"), resultSet.getString("NOME"), resultSet.getString("CPF"),
-											   tipoUsuario, resultSet.getString("SENHA"));
+											   tipoUsuario, resultSet.getString("SENHA"), resultSet.getString("EMAIL"));
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
@@ -86,10 +62,10 @@ public class MetodosEstaticos {
 							e.printStackTrace();
 						}
 					}
-					if(tipoUsuario.equalsIgnoreCase("GESTOR")) {
+					else if(tipoUsuario.equalsIgnoreCase("GESTOR")) {
 						// vou instaciar, usuario gestor e abrir a tela dele
 						user = new Gestor(resultSet.getInt("IDUSUARIO"), resultSet.getString("NOME"), resultSet.getString("CPF"), 
-										  tipoUsuario, resultSet.getString("SENHA"));
+										  tipoUsuario, resultSet.getString("SENHA"), resultSet.getString("EMAIL"));
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
@@ -102,7 +78,7 @@ public class MetodosEstaticos {
 				}
 				else {
 					// Add um label e fechar. ou posso mandar um label e limpar os campos e pedir para digitar novamente!
-					//lbMensagem
+					
 				}
 			}
 	    }catch (SQLException e) {
@@ -110,8 +86,26 @@ public class MetodosEstaticos {
 		}
 		return user;
 	}	
-		
-	// Metodo de criação de Reuniao - RODANDO SEM ERROS, SÓ FALTA COLOCAR AS HORAS NA DATA,
+	
+	// Pegar ID da SALA, retornar um objeto do tipo sala
+	public static Sala getSala( int idSala, Connection coneccao, ResultSet resultSet ) {
+		Sala sala = null;
+		if(idSala != 0)
+			try {
+				PreparedStatement pst = coneccao.prepareStatement("SELECT * FROM SALA "
+				          + "WHERE IDSALA = ? ");
+				pst.setInt(1, idSala);
+				if(resultSet.next()) {
+					sala = new Sala(resultSet.getInt("IDSALA"), resultSet.getString("NOME_SALA"), resultSet.getString("PISO"), 
+							resultSet.getString("NUMERO"), resultSet.getInt("ID_LOCAL"));
+				}else {
+					System.out.println("Esse Id não existe!");
+				}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return sala;
+	}
 	//TALVEZ MODIFICAR O CAMPO SALA PARA DAR SUPORTE A NOMES DE SALA TIPO = "AUDITORIO CENTRAL" 
 	public static void criarReunaio(Connection c, PreparedStatement p, ResultSet r) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

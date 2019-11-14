@@ -13,7 +13,6 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.SoftBevelBorder;
 
-import com.sun.javafx.font.freetype.FTFactory;
 import modelo.Usuario;
 import modelo.Comum;
 
@@ -104,7 +103,7 @@ public class TelaUsuarioComum extends JFrame {
 		
 		JPanel panelCadastro = new JPanel();
 		panelCadastro.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		tabbedPane.addTab("Cadastro e Participação", null, panelCadastro, null);
+		tabbedPane.addTab("Cadastro e Participaï¿½ï¿½o", null, panelCadastro, null);
 		panelCadastro.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Fazer Cadastro do Usu\u00E1rio");
@@ -325,13 +324,13 @@ public class TelaUsuarioComum extends JFrame {
 		panelReuniao.add(btnPesquisar);
 		
 		JPanel panelVisualizacao = new JPanel();
-		tabbedPane.addTab("Visualizações", null, panelVisualizacao, null);
+		tabbedPane.addTab("Visualizaï¿½ï¿½es", null, panelVisualizacao, null);
 		
 		JPanel panelAtas = new JPanel();
 		tabbedPane.addTab("Atas", null, panelAtas, null);
 		
 		JPanel panelPlanoDeAcao = new JPanel();
-		tabbedPane.addTab("Plano de Ação", null, panelPlanoDeAcao, null);
+		tabbedPane.addTab("Plano de Aï¿½ï¿½o", null, panelPlanoDeAcao, null);
 	}//Fim do metodo construtor!! 
 	
 	private class SwingAction extends AbstractAction {
@@ -349,13 +348,13 @@ public class TelaUsuarioComum extends JFrame {
 			System.out.println("Senha: "+senha+", Confirmar senha: "+confirmarSenha);
 			//teste = 
 			if(senha.equals(confirmarSenha)) {
-				//Entrar com a verificação de usuario
+				//Entrar com a verificaï¿½ï¿½o de usuario
 				usuario.toString();
 				//usuario.cadastrarUsuario(conect, ps, rt, nome, cpf, senha);
 				lblCadastroConfirmacao.setText("Cadastro feito com sucesso!");
 			}else {
-				// Messagem dizendo que as senhas não sao iguais!
-				System.out.println("As senhas não estao corretas");
+				// Messagem dizendo que as senhas nï¿½o sao iguais!
+				System.out.println("As senhas nï¿½o estao corretas");
 			}
 		}
 	}

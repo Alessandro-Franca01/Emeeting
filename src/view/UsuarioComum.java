@@ -7,7 +7,12 @@ package view;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import controle.MetodosEstaticos;
+import controle.Validacao;
 import modelo.Comum;
+import modelo.Sala;
+import modelo.Usuario;
+
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -25,12 +30,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JPasswordField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
+import javax.swing.AbstractListModel;
 
 /**
  *
@@ -42,15 +49,22 @@ public class UsuarioComum extends javax.swing.JFrame {
      * Creates new form UsuarioComum
      */
 	
-	JLabel lbConfirmacaoCadastro;
-	JFormattedTextField ftCpfCadastro;
+	private JLabel lbConfirmacaoCadastro;
+	private JFormattedTextField ftCpfCadastro;
+	private JTextPane tpnDadosUsuario;
     private javax.swing.JTextField tfNomeCadastro;
     private javax.swing.JTextField tfEmailCadastro;
     private JPasswordField ptSenhaCadastro;
     private JPasswordField ptConSenhaCadastro;
     private javax.swing.JComboBox cbTipoUsuarioCadastro;
-
-	
+    private javax.swing.JButton btLimparPesqUsuario;
+    private JTextPane tpDadosPesqSala;
+    private javax.swing.JButton btPesqSala;
+    private javax.swing.JComboBox cbEstado;
+    private javax.swing.JTextField tfNomeSalaPesquisa;
+    private JTextField tfCidadePesquisa;
+    private javax.swing.JTextField tfNomeLocalPesq;
+    
     public UsuarioComum() {
         initComponents();
     }
@@ -61,6 +75,7 @@ public class UsuarioComum extends javax.swing.JFrame {
  	ResultSet rt = null;
  	Comum usuario ;
  	Connection conect = null;
+ 	Usuario user;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,18 +93,21 @@ public class UsuarioComum extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btCancelarReuniao = new javax.swing.JButton();
+        btCadastrarReuniao = new javax.swing.JButton();
         //jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jComboBox5 = new javax.swing.JComboBox();
+        cbHorarioReuniao = new javax.swing.JComboBox();
+        cbHorarioReuniao.setMaximumRowCount(14);
         jPanel9 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
-        jComboBox7 = new javax.swing.JComboBox();
-        jTextField15 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
+        tfNomeLocalPesq = new javax.swing.JTextField();
+        cbEstado = new javax.swing.JComboBox();
+        cbEstado.setMaximumRowCount(10);
+        tfNomeSalaPesquisa = new javax.swing.JTextField();
+        btPesqSala = new javax.swing.JButton();
+        btPesqSala.setAction(acPesquisarSala);
         jLabel24 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         pnVisualizacao = new javax.swing.JPanel();
@@ -112,15 +130,18 @@ public class UsuarioComum extends javax.swing.JFrame {
         cbTipoUsuarioCadastro.setEnabled(false);
         tfEmailCadastro = new javax.swing.JTextField();
         btCancelarCadastro = new javax.swing.JButton();
+        btCancelarCadastro.setAction(acLimparCadUsuario);
         btSalvarCadastro = new javax.swing.JButton();
-        btSalvarCadastro.setAction(cadastrarUsuario);
+        btSalvarCadastro.setAction(acCadUsuario);
         jPanel6 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        tfPesquisarCpf = new javax.swing.JTextField();
+        btPesquisarUsuario = new javax.swing.JButton();
+        btPesquisarUsuario.setAction(acPesqUsuario);
+        btLimparPesqUsuario = new javax.swing.JButton();
+        btLimparPesqUsuario.setAction(acLimpPesqUsuario);
         jLabel13 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -138,49 +159,40 @@ public class UsuarioComum extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel10.setText("In\u00EDcio");
 
-        jButton5.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jButton5.setText("Cancelar");
+        btCancelarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        btCancelarReuniao.setText("Cancelar");
 
-        jButton6.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jButton6.setText("Confirmar");
+        btCadastrarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        btCadastrarReuniao.setText("Confirmar");
 
-        jComboBox5.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00" }));
+        cbHorarioReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14)); // NOI18N
+        cbHorarioReuniao.setModel(new DefaultComboBoxModel(new String[] {"07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00"}));
         
-        JFormattedTextField formattedTextField = new JFormattedTextField();
+        JFormattedTextField ftfDataReuniao = new JFormattedTextField();
         
         JLabel lblDurao = new JLabel();
         lblDurao.setText("Dura\u00E7\u00E3o");
         lblDurao.setFont(new Font("Candara", Font.BOLD, 14));
         
-        JComboBox comboBox = new JComboBox();
-        comboBox.setModel(new DefaultComboBoxModel(new String[] {"1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h"}));
-        comboBox.setFont(new Font("Calibri", Font.BOLD, 14));
+        JComboBox cbDuracaoReuniao = new JComboBox();
+        cbDuracaoReuniao.setMaximumRowCount(14);
+        cbDuracaoReuniao.setModel(new DefaultComboBoxModel(new String[] {"08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17::00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00"}));
+        cbDuracaoReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14));
         
         JLabel lblIdLocal = new JLabel();
-        lblIdLocal.setText("ID Local");
+        lblIdLocal.setText("ID Sala");
         lblIdLocal.setFont(new Font("Candara", Font.BOLD, 14));
         
-        textField = new JTextField();
-        textField.setColumns(10);
+        tfIdLocalReuniao = new JTextField();
+        tfIdLocalReuniao.setColumns(10);
         
         JLabel lblSala = new JLabel();
-        lblSala.setText("Sala");
+        lblSala.setText("Verifique seus dados antes de confirmar");
         lblSala.setFont(new Font("Candara", Font.BOLD, 14));
+        cbAcessoReuniao = new javax.swing.JComboBox();
         
-        textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        
-        JLabel lblDescrio = new JLabel();
-        lblDescrio.setText("Descri\u00E7\u00E3o");
-        lblDescrio.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        textField_2 = new JTextField();
-        textField_2.setColumns(10);
-        jComboBox4 = new javax.swing.JComboBox();
-        
-                jComboBox4.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-                jComboBox4.setModel(new DefaultComboBoxModel(new String[] {"P\u00FAblico", "Privado"}));
+                cbAcessoReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                cbAcessoReuniao.setModel(new DefaultComboBoxModel(new String[] {"P\u00FAblico", "Privado"}));
         jLabel23 = new javax.swing.JLabel();
         
                 jLabel23.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
@@ -191,50 +203,43 @@ public class UsuarioComum extends javax.swing.JFrame {
         	jPanel8Layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(jPanel8Layout.createSequentialGroup()
         			.addContainerGap()
-        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(jPanel8Layout.createSequentialGroup()
+        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
         					.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
         					.addContainerGap(234, Short.MAX_VALUE))
-        				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap(234, Short.MAX_VALUE))
-        				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addComponent(lblDescrio, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap(226, Short.MAX_VALUE))
-        				.addGroup(jPanel8Layout.createSequentialGroup()
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
         					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
         						.addComponent(jLabel9)
         						.addComponent(jLabel10)
-        						.addComponent(jComboBox5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+        						.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
         						.addGroup(jPanel8Layout.createSequentialGroup()
         							.addGap(97)
-        							.addComponent(jLabel8)))
+        							.addComponent(jLabel8))
+        						.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
+        							.addComponent(cbDuracaoReuniao, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+        							.addComponent(cbHorarioReuniao, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        					.addContainerGap(89, Short.MAX_VALUE))
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+        					.addComponent(tfIdLocalReuniao, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+        					.addGap(140))
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+        					.addGap(31)
+        					.addComponent(btCancelarReuniao)
+        					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+        					.addComponent(btCadastrarReuniao)
+        					.addGap(25))
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+        					.addComponent(lblDurao, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+        					.addGap(216))
+        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+        					.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
         					.addContainerGap())
         				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING)
-        						.addComponent(textField_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-        						.addComponent(textField, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-        					.addGap(140))
+        					.addComponent(jLabel23)
+        					.addContainerGap(248, Short.MAX_VALUE))
         				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addGap(31)
-        					.addComponent(jButton5)
-        					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-        					.addComponent(jButton6)
-        					.addGap(25))
-        				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(jPanel8Layout.createSequentialGroup()
-        							.addComponent(comboBox, 0, 72, Short.MAX_VALUE)
-        							.addGap(91))
-        						.addGroup(jPanel8Layout.createSequentialGroup()
-        							.addComponent(lblDurao, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-        							.addGap(89)))
-        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jLabel23)
-        						.addComponent(jComboBox4, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
-        					.addGap(20))))
+        					.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+        					.addContainerGap(183, Short.MAX_VALUE))))
         );
         jPanel8Layout.setVerticalGroup(
         	jPanel8Layout.createParallelGroup(Alignment.LEADING)
@@ -244,101 +249,99 @@ public class UsuarioComum extends javax.swing.JFrame {
         			.addGap(18)
         			.addComponent(jLabel9)
         			.addGap(4)
-        			.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addComponent(jLabel10)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(jComboBox5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(cbHorarioReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(lblDurao, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel23))
+        			.addComponent(lblDurao, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jComboBox4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addComponent(cbDuracaoReuniao, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(tfIdLocalReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jLabel23)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
         			.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(lblDescrio, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+        			.addGap(26)
         			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton5)
-        				.addComponent(jButton6))
+        				.addComponent(btCancelarReuniao)
+        				.addComponent(btCadastrarReuniao))
         			.addGap(23))
         );
         jPanel8.setLayout(jPanel8Layout);
 
         jLabel18.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel18.setText("Pesquisar Local");
+        jLabel18.setText("Pesquisar Sala");
 
         jLabel19.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel19.setText("Nome do Local");
 
         jLabel20.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel20.setText("Estado");
+        jLabel20.setText("Cidade");
 
-        jComboBox7.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jComboBox7.setModel(new DefaultComboBoxModel(new String[] {"PB", "RN", "CE", "AL", "RJ", "BH", "SP"}));
+        cbEstado.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        cbEstado.setModel(new DefaultComboBoxModel(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
 
-        jButton9.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jButton9.setText("Pesquisar");
-        jButton9.setMargin(new java.awt.Insets(5, 14, 2, 14));
+        btPesqSala.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        btPesqSala.setText("Pesquisar");
+        btPesqSala.setMargin(new java.awt.Insets(5, 14, 2, 14));
 
         jLabel24.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel24.setText("Cidade");
+        jLabel24.setText("Nome da Sala");
         
-        btnLimpar = new JButton();
-        btnLimpar.setText("Limpar");
-        btnLimpar.setMargin(new Insets(5, 14, 2, 14));
-        btnLimpar.setFont(new Font("Candara", Font.BOLD, 14));
+        btLimparPesqSala = new JButton();
+        btLimparPesqSala.setText("Limpar");
+        btLimparPesqSala.setMargin(new Insets(5, 14, 2, 14));
+        btLimparPesqSala.setFont(new Font("Candara", Font.BOLD, 14));
         
         lblDadosDoLocal = new JLabel();
-        lblDadosDoLocal.setText("Dados do Local");
+        lblDadosDoLocal.setText("Dados da Sala");
         lblDadosDoLocal.setFont(new Font("Candara", Font.BOLD, 14));
         
-        list = new JList();
+        tfCidadePesquisa = new JTextField();
+        
+        JLabel lblEstado = new JLabel();
+        lblEstado.setText("Estado");
+        lblEstado.setFont(new Font("Candara", Font.BOLD, 14));
+        
+        tpDadosPesqSala = new JTextPane();
+        tpDadosPesqSala.setEnabled(false);
+        tpDadosPesqSala.setText("Nome:\r\nID Sala:\r\nPiso:\r\nNumero:\r\nID Local:");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9Layout.setHorizontalGroup(
         	jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        		.addComponent(jTextField14, 280, 280, 280)
         		.addGroup(jPanel9Layout.createSequentialGroup()
         			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(jComboBox7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(jLabel19)
-        				.addGroup(jPanel9Layout.createParallelGroup(Alignment.TRAILING, false)
-        					.addComponent(jLabel24, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        					.addComponent(jLabel20, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)))
-        			.addContainerGap(190, Short.MAX_VALUE))
-        		.addGroup(jPanel9Layout.createSequentialGroup()
-        			.addContainerGap(81, Short.MAX_VALUE)
-        			.addComponent(jLabel18, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-        			.addGap(93))
-        		.addComponent(jTextField15, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-        		.addGroup(jPanel9Layout.createSequentialGroup()
-        			.addGap(27)
-        			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING, false)
         				.addGroup(jPanel9Layout.createSequentialGroup()
-        					.addGap(36)
-        					.addComponent(jButton9)
-        					.addGap(18)
-        					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+        					.addGap(109)
+        					.addComponent(jLabel18, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jLabel20, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jLabel24, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(tfNomeSalaPesquisa)
+        					.addComponent(tfNomeLocalPesq)
+        					.addComponent(tfCidadePesquisa)
+        					.addGroup(jPanel9Layout.createSequentialGroup()
+        						.addGap(38)
+        						.addComponent(btPesqSala)
+        						.addGap(33)
+        						.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)))
         				.addGroup(jPanel9Layout.createSequentialGroup()
-        					.addGap(62)
-        					.addComponent(lblDadosDoLocal, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        			.addContainerGap(31, Short.MAX_VALUE))
-        		.addGroup(jPanel9Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(list, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+        					.addContainerGap()
+        					.addComponent(tpDadosPesqSala, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
+        				.addGroup(jPanel9Layout.createSequentialGroup()
+        					.addGap(81)
+        					.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
         			.addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -346,55 +349,59 @@ public class UsuarioComum extends javax.swing.JFrame {
         		.addGroup(jPanel9Layout.createSequentialGroup()
         			.addContainerGap()
         			.addComponent(jLabel18)
-        			.addGap(23)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addComponent(jLabel19)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jTextField14, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(tfNomeLocalPesq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(jLabel20)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jComboBox7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addGap(16)
+        			.addComponent(tfCidadePesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(jLabel24)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jTextField15, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addGroup(jPanel9Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton9, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(tfNomeSalaPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(list, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-        			.addGap(35))
+        			.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+        			.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(tpDadosPesqSala, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+        			.addGap(20))
         );
         jPanel9.setLayout(jPanel9Layout);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+        	jPanel7Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel7Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator2)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+        	jPanel7Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel7Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(jPanel7Layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(jPanel9, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jPanel8, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        jPanel7.setLayout(jPanel7Layout);
 
         javax.swing.GroupLayout gl_pnReuniao = new javax.swing.GroupLayout(pnReuniao);
         pnReuniao.setLayout(gl_pnReuniao);
@@ -543,7 +550,7 @@ public class UsuarioComum extends javax.swing.JFrame {
         });
 
         btCancelarCadastro.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        btCancelarCadastro.setText("Cancelar");
+        btCancelarCadastro.setText("Limpar");
 
         btSalvarCadastro.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         btSalvarCadastro.setText("Salvar");
@@ -653,41 +660,41 @@ public class UsuarioComum extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel17.setText("Dados do usu\u00E1rio:");
 
-        jButton3.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jButton3.setText("Pesquisar");
+        btPesquisarUsuario.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        btPesquisarUsuario.setText("Pesquisar");
 
-        jButton4.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jButton4.setText("Limpar");
+        btLimparPesqUsuario.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        btLimparPesqUsuario.setText("Limpar");
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/homeSettings.png"))); // NOI18N
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/homeSettings.png")));
         
-        JTextPane textPane = new JTextPane();
+        tpnDadosUsuario = new JTextPane();
+        tpnDadosUsuario.setEnabled(false);
+        tpnDadosUsuario.setText("ID:\r\nNome:\r\nCpf:\r\nTipo:\r\nEmail:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6Layout.setHorizontalGroup(
-        	jPanel6Layout.createParallelGroup(Alignment.TRAILING)
+        	jPanel6Layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(jPanel6Layout.createSequentialGroup()
-        			.addContainerGap(120, Short.MAX_VALUE)
-        			.addComponent(jLabel13)
-        			.addGap(93))
-        		.addGroup(Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-        			.addGroup(jPanel6Layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(jTextField7, Alignment.LEADING, 329, 329, 329)
-        				.addComponent(jLabel16, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-        				.addGroup(Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+        			.addGroup(jPanel6Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jLabel16, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(jPanel6Layout.createSequentialGroup()
         					.addGap(110)
         					.addComponent(jLabel15))
-        				.addComponent(jLabel17, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-        				.addGroup(Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+        				.addGroup(jPanel6Layout.createSequentialGroup()
         					.addGap(71)
-        					.addComponent(jButton3)
+        					.addComponent(btPesquisarUsuario)
         					.addGap(45)
-        					.addComponent(jButton4)))
+        					.addComponent(btLimparPesqUsuario))
+        				.addComponent(tfPesquisarCpf, 329, 329, 329)
+        				.addGroup(jPanel6Layout.createSequentialGroup()
+        					.addGap(106)
+        					.addComponent(jLabel13))
+        				.addGroup(jPanel6Layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(tpnDadosUsuario, GroupLayout.PREFERRED_SIZE, 307, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jLabel17, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
         			.addContainerGap(12, Short.MAX_VALUE))
-        		.addGroup(Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-        			.addGap(18)
-        			.addComponent(textPane, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
         	jPanel6Layout.createParallelGroup(Alignment.LEADING)
@@ -697,18 +704,18 @@ public class UsuarioComum extends javax.swing.JFrame {
         			.addGap(18)
         			.addComponent(jLabel16)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(jTextField7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(tfPesquisarCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(33)
         			.addGroup(jPanel6Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton3)
-        				.addComponent(jButton4))
-        			.addGap(38)
+        				.addComponent(btPesquisarUsuario)
+        				.addComponent(btLimparPesqUsuario))
+        			.addGap(53)
         			.addComponent(jLabel17)
-        			.addGap(11)
-        			.addComponent(textPane, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+        			.addGap(27)
+        			.addComponent(tpnDadosUsuario, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
         			.addComponent(jLabel13)
-        			.addGap(35))
+        			.addContainerGap(69, Short.MAX_VALUE))
         );
         jPanel6.setLayout(jPanel6Layout);
 
@@ -816,16 +823,12 @@ public class UsuarioComum extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton btSalvarCadastro;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox5;
-    private javax.swing.JComboBox jComboBox7;
-   // private com.toedter.calendar.JDateChooser jDateChooser1;
-   // private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JButton btPesquisarUsuario;
+    private javax.swing.JButton btCancelarReuniao;
+    private javax.swing.JButton btCadastrarReuniao;
+    
+    private javax.swing.JComboBox cbAcessoReuniao;
+    private javax.swing.JComboBox cbHorarioReuniao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
@@ -857,27 +860,29 @@ public class UsuarioComum extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTable jTable1;    
+    private javax.swing.JTextField tfPesquisarCpf;
     private JPanel pnAta;
     private JPanel pnPlanoDeAcao;
-    private JTextField textField;
-    private JTextField textField_1;
-    private JTextField textField_2;
-    private JButton btnLimpar;
+    private JTextField tfIdLocalReuniao;
+    private JButton btLimparPesqSala;
     private JLabel lblDadosDoLocal;
-    private JList list;
     
    
     // Definindo açoes
-    private final Action cadastrarUsuario = new SwingAction();
+    private final Action acCadUsuario = new SwingAction();
+    private final Action acPesqUsuario = new SwingAction_2();
+    private final Action acLimpPesqUsuario = new SwingAction_1();
+    private final Action acLimparCadUsuario = new SwingAction_3();
+    private final Action acPesquisarSala = new SwingAction_4();
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
-			putValue(NAME, "Salvar");
+			putValue(NAME, "CadastrarUsuario");
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
+		
+		// --------------- Açoes da Aba de Cadastro e Pesquisa de Usuario ----------------------
+		
 		public void actionPerformed(ActionEvent e) {
 			String nome, cpf, email, senha, confirmarSenha, tipoUsuario;
 			nome = tfNomeCadastro.getText();
@@ -889,16 +894,86 @@ public class UsuarioComum extends javax.swing.JFrame {
 			System.out.println((String) cbTipoUsuarioCadastro.getSelectedItem()); // esse mesmo!
 			System.out.println("Tipo de usuario: "+tipoUsuario);
 			if(senha.equals(confirmarSenha)) {
-				// entrar com o metodo de cadastrar usuario!
 				usuario.cadastrarUsuario(conect, ps, rt, nome, cpf, confirmarSenha, email, tipoUsuario);
 				lbConfirmacaoCadastro.setText("As senhas são iguais");
-				
+				JOptionPane.showMessageDialog(rootPane, "Usuario cadastrado");
 			}else {
 				lbConfirmacaoCadastro.setText("Senhas diferentes, digite as novamente!");
 			}
 			System.out.println("Dados:");
 			System.out.println("Nome: "+nome+", Cpf: "+cpf+", Email"+email+"\nSehna: "+senha+", Confirmar Senha"+confirmarSenha);
 			
+		}
+	}
+	
+	private class SwingAction_2 extends AbstractAction {
+		public SwingAction_2() {
+			putValue(NAME, "PesquisarUsuario");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			// Implementar Funcionalidade
+			String cpf = tfPesquisarCpf.getText();
+			tfPesquisarCpf.setText(cpf);
+			System.out.println(cpf);// peguei o cpf!
+			user = usuario.pesquisarUsuario(cpf, conect, rt);
+			if(user == null) {
+				System.out.println("Usuario não existe");
+			}else{
+				System.out.println(user.toString());// aqui nao esta o toString!!
+				tpnDadosUsuario.setText("ID: "+user.getIdUser()+"\nNome: "+user.getNome()+
+						"\nCpf: "+user.getCpf()+"\nTipo: "+user.getTipo()+"\nE-mail: "+user.getEmail());
+			}
+			//btPesquisarUsuario.setEnabled(false);
+		}	
+	}
+	
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "LimparPesquisarUsuario");
+			putValue(SHORT_DESCRIPTION, "Limpar campo de pesquisa");
+		}
+		public void actionPerformed(ActionEvent e) { // ESTOU ACHANDO QUE O PROBLEMA É DO ESCOPO DE ACTION!
+			// Quando clico em limpar, não consigo mais pesquisar um novo usuario!!
+			//user = null;
+			tfPesquisarCpf.setText(""); // O Problema esta aqui!!!! como resolver isso?? 
+			//btPesquisarUsuario.setEnabled(true);
+			System.out.println("Cliquei no botão Limpar!");
+		}
+	}
+	private class SwingAction_3 extends AbstractAction {
+		public SwingAction_3() {
+			putValue(NAME, "SwingAction_3");
+			putValue(SHORT_DESCRIPTION, "Limpar campos de cadastro");
+		}
+		public void actionPerformed(ActionEvent e) {
+			tfNomeCadastro.setText("");
+			ftCpfCadastro.setText("");
+			tfEmailCadastro.setText("");
+			ptSenhaCadastro.setText("");
+			ptConSenhaCadastro.setText("");
+		}
+	}
+	
+	// --------------- Açoes da Aba de Reuniao ----------------------
+	
+	
+	private class SwingAction_4 extends AbstractAction {
+		public SwingAction_4() {
+			putValue(NAME, "SwingAction_4");
+			putValue(SHORT_DESCRIPTION, "Pesquisar dados da sala");
+		}
+		public void actionPerformed(ActionEvent e) {
+			Sala sala = null;
+			String nomeLocal, nomeSala, cidade, estado;
+			nomeLocal = tfNomeLocalPesq.getText();
+			nomeSala = tfNomeSalaPesquisa.getText();
+			cidade = tfCidadePesquisa.getText();
+			estado = ((String) cbEstado.getSelectedItem());
+			System.out.println("Local: "+nomeLocal+", Sala: "+nomeSala+", Cidade: "+cidade+", Estado: "+estado);
+			
+			int idSala = Validacao.verificarSala(conect, rt, nomeLocal, nomeSala, cidade, estado);
+			sala = MetodosEstaticos.getSala(idSala, conect, rt);
 		}
 	}
 }

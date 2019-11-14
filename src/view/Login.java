@@ -105,7 +105,8 @@ public class Login extends javax.swing.JFrame {
         });
         
         JButton btnCancelar = new JButton();
-        btnCancelar.setText("Sair");
+        btnCancelar.setAction(action_1);
+        btnCancelar.setText("Limpar");
         btnCancelar.setFont(new Font("Candara", Font.BOLD, 14));
         
         lbConfirmacaoLogin = new JLabel("Digite seu nome de usu\u00E1rio e senha");
@@ -219,7 +220,7 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration 
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel iconeLogin;
     private javax.swing.JPasswordField pfSenhaLogin;
@@ -227,8 +228,11 @@ public class Login extends javax.swing.JFrame {
     private java.awt.Label labelUsuario;
     private java.awt.Label txtBemVindo;
     private javax.swing.JTextField txtLoginUsuario;
+    
+    // AREA DE AÇOES 
     private final Action action = new SwingAction();
     private JLabel lbConfirmacaoLogin;
+    private final Action action_1 = new SwingAction_1();
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "SwingAction");
@@ -241,10 +245,21 @@ public class Login extends javax.swing.JFrame {
 			
 			if(usuario == null) {
 				lbConfirmacaoLogin.setText("Digite seus dados novamente!");
-				txtLoginUsuario.setText("");
-				pfSenhaLogin.setText("");
-			System.out.println("Nome: "+nome+", Senha: "+senha);
+				//txtLoginUsuario.setText("");
+				//pfSenhaLogin.setText("");
+				System.out.println("Nome: "+nome+", Senha: "+senha);
 			}
+		}
+	}
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "SwingAction_1");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Limpando os campos");
+			txtLoginUsuario.setText("");
+			pfSenhaLogin.setText("");
 		}
 	}
 }

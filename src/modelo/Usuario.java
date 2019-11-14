@@ -6,19 +6,19 @@ public class Usuario {
 	private String cpf;
 	private String tipo;
 	private String senha;
-	// private String email;
+	private String email;
 	
 	public Usuario() {
 		
 	}
 	
-	public Usuario(int idUser, String nome, String cpf, String tipo, String senha) {
+	public Usuario(int idUser, String nome, String cpf, String tipo, String senha, String email) {
 		this.idUser = idUser;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.tipo = tipo;
 		this.senha = senha;
-		// this.email = email;
+		this.email = email;
 	}
 	public int getIdUser() {
 		return idUser;
@@ -50,11 +50,17 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	@Override
 	public String toString() {
 		return "Usuario [idUser=" + idUser + ", nome=" + nome + ", cpf=" + cpf + ", tipo=" + tipo + ", senha=" + senha
-				+ "]";
+				+ ", email=" + email + "]";
 	}
 	
 	
