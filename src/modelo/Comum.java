@@ -24,17 +24,8 @@ public class Comum extends Usuario{
 	// Modificar esse metodo
 	public void criarReunaio(Connection c, PreparedStatement p, ResultSet r) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Scanner sc = new Scanner(System.in);
-		int idReuniao;
-		String local, sala, data;  
-		System.out.println("Digite os dados para cadastrar a reunião");
-		System.out.print("Local: ");
-		local = sc.next();
-		System.out.print("Sala:");
-		sala = sc.next();
-		System.out.print("Data no formato (aaaa-mm-dd):");
-		data = sc.next();
-		try {
+		
+		/*try {
 			// Verficação da Reuniao, retornando o ID da reuniao 
 			idReuniao = Validacao.verificarReuniao(local, sala, data, c, r);
 			if(idReuniao > 0) { 
@@ -52,7 +43,7 @@ public class Comum extends Usuario{
 			}
 		}catch(SQLException | ParseException e) { 
 			System.out.println(e.getMessage());
-		}
+		}*/
  }
 	// FUNCIONANDO!!
 	public void cadastrarUsuario(Connection coneccao, PreparedStatement pst, ResultSet resultadoCadastro, String nome, String cpf,
@@ -105,12 +96,8 @@ public class Comum extends Usuario{
 				
 	}
 	
-	public Reuniao cadastroReuniao(String data, String hora, String duracao, String acesso, int idLocal,
-								   String sala, String descricao, Connection coneccao, ResultSet rt ) {
-		
+	public Reuniao cadastroReuniao( ) {
 		Reuniao reuniao = null;
-		String dataMySQL = data+" "+hora;
-		
 		
 		return reuniao;
 	}

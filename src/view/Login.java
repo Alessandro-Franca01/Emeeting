@@ -236,7 +236,7 @@ public class Login extends javax.swing.JFrame {
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "");
 		}
 		public void actionPerformed(ActionEvent e) {
 			nome = txtLoginUsuario.getText();
@@ -254,7 +254,7 @@ public class Login extends javax.swing.JFrame {
 	private class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
 			putValue(NAME, "SwingAction_1");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "");
 		}
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Limpando os campos");

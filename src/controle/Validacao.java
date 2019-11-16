@@ -11,31 +11,30 @@ import javax.swing.AbstractAction;
 import java.sql.PreparedStatement;
 
 public class Validacao {
-	//  ESSA CLASSE VAI CONTER OS METODOS USADOS EM VALIDAÇÕES OU VERIFICAÇÕES
-	
-	public static int verificarReuniao(String l, String s, String data, Connection conec,ResultSet re) { 
-	    int id = 0;
+	// Consulta o banco e retorna o ID da reuniao, ela existir - TESTAR !!
+	public static int verificarReuniao(int idSala, String data, String horario, Connection conec,ResultSet re) { 
+	    int idReuniao = 0;
 		try {
-			PreparedStatement pst = conec.prepareStatement("SELECT IDREUNIAO FROM REUNIAO "
-					                  + "WHERE LOCAL = ? AND SALA = ? AND DATA = ?");
-			pst.setString(1, l);
-			pst.setString(2, s);
-			pst.setString(3, data);
-			re = pst.executeQuery();
-			//resultado = re.next();
-			//System.out.println(re.next());
-			if (re.next()) { 
-				id = re.getInt("IDREUNIAO");
-				System.out.println("Essa reuniao ja existe e seu Id é = "+id);
-			}else {
-				System.out.println("Essa reuniao nao existe!");
+			String dataMysql = data+" "+horario;
+		PreparedStatement pst = conec.prepareStatement("SELECT DATA_IN, IDREUNIAO, NOME_SALA " 
+														+"FROM REUNIAO "
+														+"INNER JOIN SALA "
+														+"ON IDSALA = ID_SALA "
+														+"WHERE DATA_IN = ? AND ID_SALA = ?");
+					pst.setString(1, dataMysql);
+					pst.setInt(2, idSala);
+					re = pst.executeQuery();
+					if (re.next()) { 
+						idReuniao = re.getInt("IDREUNIAO");
+						System.out.println("O ID da reuniao é = "+idReuniao);
+					}else {
+						System.out.println("Essa reuniao nao existe!");
+					}
+				}catch(SQLException e) {
+					System.out.println(e.getMessage());
+				}
+				return idReuniao;
 			}
-		}catch(SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		//System.out.println("O resultado é "+resultado);
-		return id;
-	}
 	
 	public static int verificarUsuario(String cpf, Connection con, ResultSet pesquisa) {
 		int idUsuario = 0;
@@ -57,22 +56,21 @@ public class Validacao {
 	}
 	
 	public static int verificarSala( Connection con, ResultSet pesquisa, String nomeLocal, 
-									String nomeSala, String cidade, String estado) {
+									String nomeSala, String cidade) {
 		int idSala = 0;
 		try {// Erro na query, corrigir ainda hoje!!
 			PreparedStatement pst = con.prepareStatement("SELECT NOME_LOCAL, CIDADE, NOME_SALA, IDSALA "
 														+"FROM LOCAL "
 														+"INNER JOIN SALA "
 														+"ON IDLOCAL = ID_LOCAL "
-														+"WHERE NOME_LOCAL = ? "
-														+"AND WHERE NOME_SALA = ? "
-														+"WHERE CIDADE = ? ");
-			pst.setString(1, nomeLocal);
-			pst.setString(2, nomeSala);
+														+"WHERE NOME_SALA = ? AND NOME_LOCAL = ? AND CIDADE = ?");
+			pst.setString(1, nomeSala);
+			pst.setString(2, nomeLocal);
 			pst.setString(3, cidade);
-			if (pesquisa.next()) { 
+			pesquisa = pst.executeQuery();
+			if (pesquisa.next()) { // erro aqui!!???
 				idSala = pesquisa.getInt("IDSALA");
-				System.out.println("O id do usuario é: "+idSala);
+				System.out.println("O id da sala é: "+idSala);
 			}else {
 				System.out.println("Usuário não cadastrado!");
 			}

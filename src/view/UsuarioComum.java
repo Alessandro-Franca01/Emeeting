@@ -38,6 +38,13 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.AbstractListModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.UIManager;
+import java.awt.SystemColor;
 
 /**
  *
@@ -64,6 +71,8 @@ public class UsuarioComum extends javax.swing.JFrame {
     private javax.swing.JTextField tfNomeSalaPesquisa;
     private JTextField tfCidadePesquisa;
     private javax.swing.JTextField tfNomeLocalPesq;
+    private JComboBox cbTerminoReuniao;
+    private JFormattedTextField ftfDataReuniao;
     
     public UsuarioComum() {
         initComponents();
@@ -87,35 +96,6 @@ public class UsuarioComum extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        pnReuniao = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        btCancelarReuniao = new javax.swing.JButton();
-        btCadastrarReuniao = new javax.swing.JButton();
-        //jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        cbHorarioReuniao = new javax.swing.JComboBox();
-        cbHorarioReuniao.setMaximumRowCount(14);
-        jPanel9 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        tfNomeLocalPesq = new javax.swing.JTextField();
-        cbEstado = new javax.swing.JComboBox();
-        cbEstado.setMaximumRowCount(10);
-        tfNomeSalaPesquisa = new javax.swing.JTextField();
-        btPesqSala = new javax.swing.JButton();
-        btPesqSala.setAction(acPesquisarSala);
-        jLabel24 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        pnVisualizacao = new javax.swing.JPanel();
-       // jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         pnCadastro = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -149,375 +129,6 @@ public class UsuarioComum extends javax.swing.JFrame {
         setTitle("e-Meeting - Usuário Comum");
 
         jTabbedPane1.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-
-        jLabel8.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel8.setText("Reservar Reunião");
-
-        jLabel9.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel9.setText("Data");
-
-        jLabel10.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel10.setText("In\u00EDcio");
-
-        btCancelarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        btCancelarReuniao.setText("Cancelar");
-
-        btCadastrarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        btCadastrarReuniao.setText("Confirmar");
-
-        cbHorarioReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14)); // NOI18N
-        cbHorarioReuniao.setModel(new DefaultComboBoxModel(new String[] {"07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00"}));
-        
-        JFormattedTextField ftfDataReuniao = new JFormattedTextField();
-        
-        JLabel lblDurao = new JLabel();
-        lblDurao.setText("Dura\u00E7\u00E3o");
-        lblDurao.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        JComboBox cbDuracaoReuniao = new JComboBox();
-        cbDuracaoReuniao.setMaximumRowCount(14);
-        cbDuracaoReuniao.setModel(new DefaultComboBoxModel(new String[] {"08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17::00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00"}));
-        cbDuracaoReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        
-        JLabel lblIdLocal = new JLabel();
-        lblIdLocal.setText("ID Sala");
-        lblIdLocal.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        tfIdLocalReuniao = new JTextField();
-        tfIdLocalReuniao.setColumns(10);
-        
-        JLabel lblSala = new JLabel();
-        lblSala.setText("Verifique seus dados antes de confirmar");
-        lblSala.setFont(new Font("Candara", Font.BOLD, 14));
-        cbAcessoReuniao = new javax.swing.JComboBox();
-        
-                cbAcessoReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-                cbAcessoReuniao.setModel(new DefaultComboBoxModel(new String[] {"P\u00FAblico", "Privado"}));
-        jLabel23 = new javax.swing.JLabel();
-        
-                jLabel23.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-                jLabel23.setText("Acesso");
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8Layout.setHorizontalGroup(
-        	jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(jPanel8Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap(234, Short.MAX_VALUE))
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jLabel9)
-        						.addComponent(jLabel10)
-        						.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
-        						.addGroup(jPanel8Layout.createSequentialGroup()
-        							.addGap(97)
-        							.addComponent(jLabel8))
-        						.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
-        							.addComponent(cbDuracaoReuniao, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-        							.addComponent(cbHorarioReuniao, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        					.addContainerGap(89, Short.MAX_VALUE))
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addComponent(tfIdLocalReuniao, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-        					.addGap(140))
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addGap(31)
-        					.addComponent(btCancelarReuniao)
-        					.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-        					.addComponent(btCadastrarReuniao)
-        					.addGap(25))
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addComponent(lblDurao, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-        					.addGap(216))
-        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-        					.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap())
-        				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addComponent(jLabel23)
-        					.addContainerGap(248, Short.MAX_VALUE))
-        				.addGroup(jPanel8Layout.createSequentialGroup()
-        					.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-        					.addContainerGap(183, Short.MAX_VALUE))))
-        );
-        jPanel8Layout.setVerticalGroup(
-        	jPanel8Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(jPanel8Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(jLabel8)
-        			.addGap(18)
-        			.addComponent(jLabel9)
-        			.addGap(4)
-        			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(jLabel10)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(cbHorarioReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(lblDurao, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(cbDuracaoReuniao, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(tfIdLocalReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jLabel23)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-        			.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addGap(26)
-        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(btCancelarReuniao)
-        				.addComponent(btCadastrarReuniao))
-        			.addGap(23))
-        );
-        jPanel8.setLayout(jPanel8Layout);
-
-        jLabel18.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel18.setText("Pesquisar Sala");
-
-        jLabel19.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel19.setText("Nome do Local");
-
-        jLabel20.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel20.setText("Cidade");
-
-        cbEstado.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        cbEstado.setModel(new DefaultComboBoxModel(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
-
-        btPesqSala.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        btPesqSala.setText("Pesquisar");
-        btPesqSala.setMargin(new java.awt.Insets(5, 14, 2, 14));
-
-        jLabel24.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel24.setText("Nome da Sala");
-        
-        btLimparPesqSala = new JButton();
-        btLimparPesqSala.setText("Limpar");
-        btLimparPesqSala.setMargin(new Insets(5, 14, 2, 14));
-        btLimparPesqSala.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        lblDadosDoLocal = new JLabel();
-        lblDadosDoLocal.setText("Dados da Sala");
-        lblDadosDoLocal.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        tfCidadePesquisa = new JTextField();
-        
-        JLabel lblEstado = new JLabel();
-        lblEstado.setText("Estado");
-        lblEstado.setFont(new Font("Candara", Font.BOLD, 14));
-        
-        tpDadosPesqSala = new JTextPane();
-        tpDadosPesqSala.setEnabled(false);
-        tpDadosPesqSala.setText("Nome:\r\nID Sala:\r\nPiso:\r\nNumero:\r\nID Local:");
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9Layout.setHorizontalGroup(
-        	jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(jPanel9Layout.createSequentialGroup()
-        			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(jLabel19)
-        				.addGroup(jPanel9Layout.createSequentialGroup()
-        					.addGap(109)
-        					.addComponent(jLabel18, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
-        				.addComponent(jLabel20, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jLabel24, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING, false)
-        					.addComponent(tfNomeSalaPesquisa)
-        					.addComponent(tfNomeLocalPesq)
-        					.addComponent(tfCidadePesquisa)
-        					.addGroup(jPanel9Layout.createSequentialGroup()
-        						.addGap(38)
-        						.addComponent(btPesqSala)
-        						.addGap(33)
-        						.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)))
-        				.addGroup(jPanel9Layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(tpDadosPesqSala, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
-        				.addGroup(jPanel9Layout.createSequentialGroup()
-        					.addGap(81)
-        					.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
-        			.addContainerGap())
-        );
-        jPanel9Layout.setVerticalGroup(
-        	jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(jPanel9Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(jLabel18)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(jLabel19)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(tfNomeLocalPesq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jLabel20)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(tfCidadePesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jLabel24)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(tfNomeSalaPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addGap(18)
-        			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(btPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
-        			.addPreferredGap(ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-        			.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(tpDadosPesqSala, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-        			.addGap(20))
-        );
-        jPanel9.setLayout(jPanel9Layout);
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7Layout.setHorizontalGroup(
-        	jPanel7Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(jPanel7Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(19, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-        	jPanel7Layout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(jPanel7Layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addGroup(jPanel7Layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(jPanel9, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(jPanel8, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
-        			.addContainerGap())
-        );
-        jPanel7.setLayout(jPanel7Layout);
-
-        javax.swing.GroupLayout gl_pnReuniao = new javax.swing.GroupLayout(pnReuniao);
-        pnReuniao.setLayout(gl_pnReuniao);
-        gl_pnReuniao.setHorizontalGroup(
-            gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 693, Short.MAX_VALUE)
-            .addGroup(gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(gl_pnReuniao.createSequentialGroup()
-                    .addGap(0, 14, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 14, Short.MAX_VALUE)))
-        );
-        gl_pnReuniao.setVerticalGroup(
-            gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
-            .addGroup(gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(gl_pnReuniao.createSequentialGroup()
-                    .addGap(0, 43, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 44, Short.MAX_VALUE)))
-        );
-
-        jTabbedPane1.addTab("Reuniões", pnReuniao);
-
-        jButton11.setText("Adicionar");
-
-        jButton12.setText("Excluir");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout gl_pnVisualizacao = new javax.swing.GroupLayout(pnVisualizacao);
-        gl_pnVisualizacao.setHorizontalGroup(
-        	gl_pnVisualizacao.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(gl_pnVisualizacao.createSequentialGroup()
-        			.addGap(32)
-        			.addComponent(jButton11)
-        			.addPreferredGap(ComponentPlacement.RELATED, 468, Short.MAX_VALUE)
-        			.addComponent(jButton12)
-        			.addGap(53))
-        		.addGroup(Alignment.LEADING, gl_pnVisualizacao.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
-        			.addContainerGap())
-        );
-        gl_pnVisualizacao.setVerticalGroup(
-        	gl_pnVisualizacao.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, gl_pnVisualizacao.createSequentialGroup()
-        			.addGap(24)
-        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-        			.addGroup(gl_pnVisualizacao.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(jButton11)
-        				.addComponent(jButton12))
-        			.addGap(35))
-        );
-        pnVisualizacao.setLayout(gl_pnVisualizacao);
-
-        jTabbedPane1.addTab("Vizualizar Reuniões", pnVisualizacao);
 
         jLabel1.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel1.setText("Cadastro de Usu\u00E1rio");
@@ -760,6 +371,508 @@ public class UsuarioComum extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
         );
+        pnVisualizacao = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbReunioesPublica = new javax.swing.JTable();
+        
+                tbReunioesPublica.setModel(new DefaultTableModel(
+                	new Object[][] {
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                		{null, null, null, null, null, null, null},
+                	},
+                	new String[] {
+                		"Propriet\u00E1rio", "Local", "Sala", "Piso", "In\u00EDcio", "T\u00E9rmino", "Confirma\u00E7\u00E3o"
+                	}
+                ));
+                tbReunioesPublica.getTableHeader().setReorderingAllowed(false);
+                pnReuniao = new javax.swing.JPanel();
+                jPanel7 = new javax.swing.JPanel();
+                jPanel8 = new javax.swing.JPanel();
+                jLabel8 = new javax.swing.JLabel();
+                jLabel9 = new javax.swing.JLabel();
+                jLabel10 = new javax.swing.JLabel();
+                btCancelarReuniao = new javax.swing.JButton();
+                btCancelarReuniao.setAction(acLimparCadReuniao);
+                btCadastrarReuniao = new javax.swing.JButton();
+                btCadastrarReuniao.setAction(acCadReuniao);
+                //jDateChooser1 = new com.toedter.calendar.JDateChooser();
+                cbInicioReuniao = new javax.swing.JComboBox();
+                cbInicioReuniao.setMaximumRowCount(14);
+                jPanel9 = new javax.swing.JPanel();
+                jLabel18 = new javax.swing.JLabel();
+                jLabel19 = new javax.swing.JLabel();
+                jLabel20 = new javax.swing.JLabel();
+                tfNomeLocalPesq = new javax.swing.JTextField();
+                cbEstado = new javax.swing.JComboBox();
+                cbEstado.setMaximumRowCount(10);
+                tfNomeSalaPesquisa = new javax.swing.JTextField();
+                btPesqSala = new javax.swing.JButton();
+                btPesqSala.setAction(acPesquisarSala);
+                jLabel24 = new javax.swing.JLabel();
+                jSeparator2 = new javax.swing.JSeparator();
+                
+                        jLabel8.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                        jLabel8.setText("Reservar Reunião");
+                        
+                                jLabel9.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                jLabel9.setText("Data");
+                                
+                                        jLabel10.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                        jLabel10.setText("In\u00EDcio");
+                                        
+                                                btCancelarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                btCancelarReuniao.setText("Cancelar");
+                                                
+                                                        btCadastrarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                        btCadastrarReuniao.setText("Confirmar");
+                                                        
+                                                                cbInicioReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14)); // NOI18N
+                                                                cbInicioReuniao.setModel(new DefaultComboBoxModel(new String[] {"07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00"}));
+                                                                
+                                                                ftfDataReuniao = new JFormattedTextField();
+                                                                
+                                                                JLabel lblDurao = new JLabel();
+                                                                lblDurao.setText("Termino");
+                                                                lblDurao.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                
+                                                                cbTerminoReuniao = new JComboBox();
+                                                                cbTerminoReuniao.setMaximumRowCount(14);
+                                                                cbTerminoReuniao.setModel(new DefaultComboBoxModel(new String[] {"08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17::00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00"}));
+                                                                cbTerminoReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                                                                
+                                                                JLabel lblIdLocal = new JLabel();
+                                                                lblIdLocal.setText("ID Sala");
+                                                                lblIdLocal.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                
+                                                                tfIdSala = new JTextField();
+                                                                tfIdSala.setColumns(10);
+                                                                
+                                                                JLabel lblSala = new JLabel();
+                                                                lblSala.setText("Verifique seus dados antes de confirmar");
+                                                                lblSala.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                cbAcessoReuniao = new javax.swing.JComboBox();
+                                                                
+                                                                        cbAcessoReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                        cbAcessoReuniao.setModel(new DefaultComboBoxModel(new String[] {"Publico", "Privado"}));
+                                                                        jLabel23 = new javax.swing.JLabel();
+                                                                        
+                                                                                jLabel23.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                jLabel23.setText("Acesso");
+                                                                                
+                                                                                JLabel label = new JLabel();
+                                                                                label.setText("Nome do Local");
+                                                                                label.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                                
+                                                                                tfNomeLocalCadReuniao = new JTextField();
+                                                                                
+                                                                                        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+                                                                                        jPanel8Layout.setHorizontalGroup(
+                                                                                        	jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addContainerGap(234, Short.MAX_VALUE))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        						.addComponent(jLabel10)
+                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        							.addGap(97)
+                                                                                        							.addComponent(jLabel8))
+                                                                                        						.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
+                                                                                        							.addComponent(cbTerminoReuniao, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                                                                                        							.addComponent(cbInicioReuniao, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                                                        					.addContainerGap(89, Short.MAX_VALUE))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(lblDurao, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                                                                                        					.addGap(216))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(jLabel23)
+                                                                                        					.addContainerGap(248, Short.MAX_VALUE))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addContainerGap(183, Short.MAX_VALUE))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGap(22)
+                                                                                        					.addComponent(btCancelarReuniao)
+                                                                                        					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                                                                                        					.addComponent(btCadastrarReuniao)
+                                                                                        					.addGap(41))
+                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addGap(18))
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(jLabel9)
+                                                                                        					.addContainerGap(262, Short.MAX_VALUE))
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(label, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addContainerGap(200, Short.MAX_VALUE))
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addContainerGap(19, Short.MAX_VALUE))
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
+                                                                                        						.addComponent(tfIdSala, Alignment.LEADING)
+                                                                                        						.addComponent(ftfDataReuniao, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                                                                                        					.addContainerGap(150, Short.MAX_VALUE))))
+                                                                                        );
+                                                                                        jPanel8Layout.setVerticalGroup(
+                                                                                        	jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(jLabel8)
+                                                                                        			.addGap(11)
+                                                                                        			.addComponent(label, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addGap(4)
+                                                                                        			.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addGap(18)
+                                                                                        			.addComponent(jLabel10)
+                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                        			.addComponent(cbInicioReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                        			.addComponent(lblDurao, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(cbTerminoReuniao, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(jLabel23)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(jLabel9)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                                                                                        			.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
+                                                                                        				.addComponent(btCancelarReuniao)
+                                                                                        				.addComponent(btCadastrarReuniao))
+                                                                                        			.addGap(25))
+                                                                                        );
+                                                                                        jPanel8.setLayout(jPanel8Layout);
+                                                                                        
+                                                                                                jLabel18.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                jLabel18.setText("Pesquisar Sala");
+                                                                                                
+                                                                                                        jLabel19.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                        jLabel19.setText("Nome do Local");
+                                                                                                        
+                                                                                                                jLabel20.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                                jLabel20.setText("Cidade");
+                                                                                                                
+                                                                                                                        cbEstado.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                                        cbEstado.setModel(new DefaultComboBoxModel(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
+                                                                                                                        
+                                                                                                                                btPesqSala.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                                                btPesqSala.setText("Pesquisar");
+                                                                                                                                btPesqSala.setMargin(new java.awt.Insets(5, 14, 2, 14));
+                                                                                                                                
+                                                                                                                                        jLabel24.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+                                                                                                                                        jLabel24.setText("Nome da Sala");
+                                                                                                                                        
+                                                                                                                                        btLimparPesqSala = new JButton();
+                                                                                                                                        btLimparPesqSala.setAction(acLimparPesqSala);
+                                                                                                                                        btLimparPesqSala.setText("Limpar");
+                                                                                                                                        btLimparPesqSala.setMargin(new Insets(5, 14, 2, 14));
+                                                                                                                                        btLimparPesqSala.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                                                                                        
+                                                                                                                                        lblDadosDoLocal = new JLabel();
+                                                                                                                                        lblDadosDoLocal.setText("Dados da Sala");
+                                                                                                                                        lblDadosDoLocal.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                                                                                        
+                                                                                                                                        tfCidadePesquisa = new JTextField();
+                                                                                                                                        
+                                                                                                                                        JLabel lblEstado = new JLabel();
+                                                                                                                                        lblEstado.setText("Estado");
+                                                                                                                                        lblEstado.setFont(new Font("Candara", Font.BOLD, 14));
+                                                                                                                                        
+                                                                                                                                        tpDadosPesqSala = new JTextPane();
+                                                                                                                                        tpDadosPesqSala.setEnabled(false);
+                                                                                                                                        tpDadosPesqSala.setText("Nome:\r\nID Sala:\r\nPiso:\r\nNumero:\r\nID Local:");
+                                                                                                                                        
+                                                                                                                                        lblNewLabel = new JLabel("*Dados em branco, quer dizer sem registro ");
+                                                                                                                                        lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
+                                                                                                                                        
+                                                                                                                                                javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+                                                                                                                                                jPanel9Layout.setHorizontalGroup(
+                                                                                                                                                	jPanel9Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                		.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                				.addComponent(jLabel19)
+                                                                                                                                                				.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                					.addGap(109)
+                                                                                                                                                					.addComponent(jLabel18, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE))
+                                                                                                                                                				.addComponent(jLabel20, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                				.addComponent(jLabel24, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                				.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                				.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                				.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING, false)
+                                                                                                                                                					.addComponent(tfNomeSalaPesquisa)
+                                                                                                                                                					.addComponent(tfNomeLocalPesq)
+                                                                                                                                                					.addComponent(tfCidadePesquisa)
+                                                                                                                                                					.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                						.addGap(38)
+                                                                                                                                                						.addComponent(btPesqSala)
+                                                                                                                                                						.addGap(33)
+                                                                                                                                                						.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE))))
+                                                                                                                                                			.addContainerGap())
+                                                                                                                                                		.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                			.addContainerGap(89, Short.MAX_VALUE)
+                                                                                                                                                			.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addGap(79))
+                                                                                                                                                		.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                			.addContainerGap()
+                                                                                                                                                			.addComponent(tpDadosPesqSala, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                                                                                                                                                			.addContainerGap())
+                                                                                                                                                		.addGroup(Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                                                                                                                                			.addContainerGap()
+                                                                                                                                                			.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                                                                                                                                                			.addContainerGap())
+                                                                                                                                                );
+                                                                                                                                                jPanel9Layout.setVerticalGroup(
+                                                                                                                                                	jPanel9Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                		.addGroup(jPanel9Layout.createSequentialGroup()
+                                                                                                                                                			.addContainerGap()
+                                                                                                                                                			.addComponent(jLabel18)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                                                                                			.addComponent(jLabel19)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(tfNomeLocalPesq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(jLabel20)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(tfCidadePesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(jLabel24)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(tfNomeSalaPesquisa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addGap(18)
+                                                                                                                                                			.addGroup(jPanel9Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                				.addComponent(btLimparPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                				.addComponent(btPesqSala, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                                                                                                                                                			.addComponent(lblDadosDoLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                			.addComponent(tpDadosPesqSala, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                                                                                			.addComponent(lblNewLabel)
+                                                                                                                                                			.addGap(29))
+                                                                                                                                                );
+                                                                                                                                                jPanel9.setLayout(jPanel9Layout);
+                                                                                                                                                
+                                                                                                                                                        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+                                                                                                                                                        
+                                                                                                                                                                javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+                                                                                                                                                                jPanel7Layout.setHorizontalGroup(
+                                                                                                                                                                	jPanel7Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                                		.addGroup(jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                			.addContainerGap()
+                                                                                                                                                                			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                                			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                                			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addContainerGap(19, Short.MAX_VALUE))
+                                                                                                                                                                );
+                                                                                                                                                                jPanel7Layout.setVerticalGroup(
+                                                                                                                                                                	jPanel7Layout.createParallelGroup(Alignment.TRAILING)
+                                                                                                                                                                		.addGroup(jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                			.addContainerGap()
+                                                                                                                                                                			.addGroup(jPanel7Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                                				.addComponent(jPanel9, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                                                                                                				.addComponent(jPanel8, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+                                                                                                                                                                			.addContainerGap())
+                                                                                                                                                                		.addComponent(jSeparator2, GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                                                                                                                                                                );
+                                                                                                                                                                jPanel7.setLayout(jPanel7Layout);
+                                                                                                                                                                
+                                                                                                                                                                        javax.swing.GroupLayout gl_pnReuniao = new javax.swing.GroupLayout(pnReuniao);
+                                                                                                                                                                        pnReuniao.setLayout(gl_pnReuniao);
+                                                                                                                                                                        gl_pnReuniao.setHorizontalGroup(
+                                                                                                                                                                            gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                                                            .addGap(0, 693, Short.MAX_VALUE)
+                                                                                                                                                                            .addGroup(gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                                                                .addGroup(gl_pnReuniao.createSequentialGroup()
+                                                                                                                                                                                    .addGap(0, 14, Short.MAX_VALUE)
+                                                                                                                                                                                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                                    .addGap(0, 14, Short.MAX_VALUE)))
+                                                                                                                                                                        );
+                                                                                                                                                                        gl_pnReuniao.setVerticalGroup(
+                                                                                                                                                                            gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                                                            .addGap(0, 531, Short.MAX_VALUE)
+                                                                                                                                                                            .addGroup(gl_pnReuniao.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                                                                .addGroup(gl_pnReuniao.createSequentialGroup()
+                                                                                                                                                                                    .addGap(0, 43, Short.MAX_VALUE)
+                                                                                                                                                                                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                                    .addGap(0, 44, Short.MAX_VALUE)))
+                                                                                                                                                                        );
+                                                                                                                                                                        
+                                                                                                                                                                                jTabbedPane1.addTab("Reuniões", pnReuniao);
+                jScrollPane1.setViewportView(tbReunioesPublica);
+                
+                JLabel lblReuniesPblicas = new JLabel("Reuni\u00F5es P\u00FAblicas");
+                lblReuniesPblicas.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                
+                JScrollPane scrollPane = new JScrollPane();
+                
+                JLabel lblReuniesConvidadas = new JLabel("Reuni\u00F5es Convidadas");
+                lblReuniesConvidadas.setFont(new Font("Times New Roman", Font.BOLD, 14));
+                        
+                        JButton btMostrar = new JButton("Mostrar");
+                        btMostrar.setBackground(UIManager.getColor("Button.background"));
+                        btMostrar.setForeground(Color.BLACK);
+                        btMostrar.setAction(acMostrarRePublica);
+                        
+                        btnMostrarReunisConvidadas = new JButton("Mostrar Reuni\u00F5s Convidadas");
+                        btnMostrarReunisConvidadas.setForeground(Color.BLACK);
+                        btnMostrarReunisConvidadas.setBackground(UIManager.getColor("Button.background"));
+                
+                        javax.swing.GroupLayout gl_pnVisualizacao = new javax.swing.GroupLayout(pnVisualizacao);
+                        gl_pnVisualizacao.setHorizontalGroup(
+                        	gl_pnVisualizacao.createParallelGroup(Alignment.TRAILING)
+                        		.addGroup(gl_pnVisualizacao.createSequentialGroup()
+                        			.addContainerGap()
+                        			.addGroup(gl_pnVisualizacao.createParallelGroup(Alignment.LEADING)
+                        				.addGroup(gl_pnVisualizacao.createParallelGroup(Alignment.LEADING)
+                        					.addGroup(Alignment.TRAILING, gl_pnVisualizacao.createSequentialGroup()
+                        						.addGroup(gl_pnVisualizacao.createParallelGroup(Alignment.TRAILING)
+                        							.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
+                        							.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE))
+                        						.addContainerGap())
+                        					.addGroup(gl_pnVisualizacao.createSequentialGroup()
+                        						.addComponent(btMostrar, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+                        						.addGap(131)
+                        						.addComponent(lblReuniesConvidadas, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+                        						.addContainerGap())
+                        					.addGroup(gl_pnVisualizacao.createSequentialGroup()
+                        						.addComponent(btnMostrarReunisConvidadas, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE)
+                        						.addContainerGap()))
+                        				.addGroup(Alignment.TRAILING, gl_pnVisualizacao.createSequentialGroup()
+                        					.addComponent(lblReuniesPblicas, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
+                        					.addGap(230))))
+                        );
+                        gl_pnVisualizacao.setVerticalGroup(
+                        	gl_pnVisualizacao.createParallelGroup(Alignment.LEADING)
+                        		.addGroup(gl_pnVisualizacao.createSequentialGroup()
+                        			.addGap(13)
+                        			.addComponent(lblReuniesPblicas)
+                        			.addGap(18)
+                        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+                        			.addGap(18)
+                        			.addGroup(gl_pnVisualizacao.createParallelGroup(Alignment.LEADING)
+                        				.addComponent(lblReuniesConvidadas, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+                        				.addComponent(btMostrar))
+                        			.addGap(18)
+                        			.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+                        			.addGap(18)
+                        			.addComponent(btnMostrarReunisConvidadas)
+                        			.addContainerGap(28, Short.MAX_VALUE))
+                        );
+                        
+                        tbReunioesConvidadas = new JTable();
+                        tbReunioesConvidadas.setModel(new DefaultTableModel(
+                        	new Object[][] {
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        		{null, null, null, null, null, null, null},
+                        	},
+                        	new String[] {
+                        		"Propriet\u00E1rio", "Local", "Sala", "Piso", "In\u00EDcio", "T\u00E9rmino", "Confirma\u00E7\u00E3o"
+                        	}
+                        ));
+                        scrollPane.setViewportView(tbReunioesConvidadas);
+                        pnVisualizacao.setLayout(gl_pnVisualizacao);
+                        
+                                jTabbedPane1.addTab("Vizualizar Reuniões", pnVisualizacao);
+        
+        JPanel pnConfirmacao_Pariticipacao = new JPanel();
+        jTabbedPane1.addTab("Confrima\u00E7\u00E3o & Participa\u00E7\u00E3o", null, pnConfirmacao_Pariticipacao, null);
+        pnConfirmacao_Pariticipacao.setLayout(null);
+        
+        JSeparator separator = new JSeparator();
+        separator.setOrientation(SwingConstants.VERTICAL);
+        separator.setBounds(346, 11, 8, 568);
+        pnConfirmacao_Pariticipacao.add(separator);
+        
+        JPanel panel = new JPanel();
+        panel.setBounds(10, 11, 326, 568);
+        pnConfirmacao_Pariticipacao.add(panel);
+        panel.setLayout(null);
+        
+        JLabel lblConfirmarParticipao = new JLabel("Confirmar Participa\u00E7\u00E3o");
+        lblConfirmarParticipao.setFont(new Font("Sitka Small", Font.BOLD, 12));
+        lblConfirmarParticipao.setBounds(74, 11, 195, 21);
+        panel.add(lblConfirmarParticipao);
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setBounds(369, 11, 326, 568);
+        pnConfirmacao_Pariticipacao.add(panel_1);
+        panel_1.setLayout(null);
+        
+        JLabel lblAdicionarParticipante = new JLabel("Adicionar Participante");
+        lblAdicionarParticipante.setFont(new Font("Sitka Small", Font.BOLD, 12));
+        lblAdicionarParticipante.setBounds(68, 11, 195, 21);
+        panel_1.add(lblAdicionarParticipante);
         
         pnAta = new JPanel();
         jTabbedPane1.addTab("Atas", null, pnAta, null);
@@ -820,15 +933,12 @@ public class UsuarioComum extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelarCadastro;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton btSalvarCadastro;
     private javax.swing.JButton btPesquisarUsuario;
     private javax.swing.JButton btCancelarReuniao;
     private javax.swing.JButton btCadastrarReuniao;
-    
     private javax.swing.JComboBox cbAcessoReuniao;
-    private javax.swing.JComboBox cbHorarioReuniao;
+    private javax.swing.JComboBox cbInicioReuniao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
@@ -860,21 +970,29 @@ public class UsuarioComum extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;    
+    private javax.swing.JTable tbReunioesPublica;    
     private javax.swing.JTextField tfPesquisarCpf;
     private JPanel pnAta;
     private JPanel pnPlanoDeAcao;
-    private JTextField tfIdLocalReuniao;
+    private JTextField tfIdSala;
     private JButton btLimparPesqSala;
     private JLabel lblDadosDoLocal;
+    private JTable tbReunioesConvidadas;
+    private JLabel lblNewLabel;
+    private JTextField tfNomeLocalCadReuniao;
     
-   
     // Definindo açoes
     private final Action acCadUsuario = new SwingAction();
     private final Action acPesqUsuario = new SwingAction_2();
     private final Action acLimpPesqUsuario = new SwingAction_1();
     private final Action acLimparCadUsuario = new SwingAction_3();
     private final Action acPesquisarSala = new SwingAction_4();
+    private final Action acLimparPesqSala = new SwingAction_5();
+    private final Action acCadReuniao = new SwingAction_6();
+    private final Action acLimparCadReuniao = new SwingAction_7();
+    private final Action acMostrarRePublica = new SwingAction_8();
+    private JButton btnMostrarReunisConvidadas;
+   
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "CadastrarUsuario");
@@ -960,8 +1078,8 @@ public class UsuarioComum extends javax.swing.JFrame {
 	
 	private class SwingAction_4 extends AbstractAction {
 		public SwingAction_4() {
-			putValue(NAME, "SwingAction_4");
-			putValue(SHORT_DESCRIPTION, "Pesquisar dados da sala");
+			putValue(NAME, "Pesquisar Sala");
+			putValue(SHORT_DESCRIPTION, "");
 		}
 		public void actionPerformed(ActionEvent e) {
 			Sala sala = null;
@@ -972,8 +1090,65 @@ public class UsuarioComum extends javax.swing.JFrame {
 			estado = ((String) cbEstado.getSelectedItem());
 			System.out.println("Local: "+nomeLocal+", Sala: "+nomeSala+", Cidade: "+cidade+", Estado: "+estado);
 			
-			int idSala = Validacao.verificarSala(conect, rt, nomeLocal, nomeSala, cidade, estado);
-			sala = MetodosEstaticos.getSala(idSala, conect, rt);
+			int idSala = Validacao.verificarSala(conect, rt, nomeLocal, nomeSala, cidade);
+			if(idSala != 0) {
+				sala = MetodosEstaticos.getSala(idSala, conect, rt);
+				System.out.println(sala.toString());
+				tpDadosPesqSala.setText("Nome: "+sala.getNomeSala()+"\nID Sala: "+sala.getIdSala()+
+										"\nPiso: "+sala.getPiso()+"\nNúmero: "+"\nID Local: "+sala.getIdLocal());
+			}else if (idSala == 0){
+				System.out.println("Nao exista sala com esses dados!");
+				JOptionPane.showMessageDialog(rootPane, "Sala não encontrada!");
+			}
+			btPesqSala.setEnabled(false);
+		}
+	}
+	private class SwingAction_5 extends AbstractAction {
+		public SwingAction_5() {
+			putValue(NAME, "Limpar Pesquisa");
+			putValue(SHORT_DESCRIPTION, "");
+		}
+		public void actionPerformed(ActionEvent e) {
+			tfNomeLocalPesq.setText("");
+			tfNomeSalaPesquisa.setText("");
+			tfCidadePesquisa.setText("");
+			tpDadosPesqSala.setText("Nome: "+"\nID Sala: "+"\nPiso: "+"\nNúmero: "+"\nID Local: ");
+			btPesqSala.setEnabled(true);
+		}
+	}
+	private class SwingAction_6 extends AbstractAction {
+		public SwingAction_6() {
+			putValue(NAME, "SwingAction_6");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			String local, data, horaInicial, horaFinal, acesso;
+			int idSala = Integer.parseInt(tfIdSala.getText());
+			local = tfNomeLocalCadReuniao.getText();
+			horaInicial = ((String) cbInicioReuniao.getSelectedItem());
+			horaFinal = ((String) cbTerminoReuniao.getSelectedItem());
+			acesso = ((String)cbAcessoReuniao.getSelectedItem());
+			data = ftfDataReuniao.getText();
+			System.out.println("ID SALA:"+idSala+" /Local: "+local+"/Horario Inicial: "+horaInicial+"\nHorario Final: "+horaFinal+
+								"/Acesso:"+acesso+" /Data: "+data);
+			int idReuniao = Validacao.verificarReuniao(idSala, data, horaInicial, conect, rt);
+			// FUNCIONANDO!!
+		}
+	}
+	private class SwingAction_7 extends AbstractAction {
+		public SwingAction_7() {
+			putValue(NAME, "SwingAction_7");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
+	private class SwingAction_8 extends AbstractAction {
+		public SwingAction_8() {
+			putValue(NAME, "Mostrar Reunioes Publicas");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
 		}
 	}
 }

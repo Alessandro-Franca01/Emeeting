@@ -15,7 +15,6 @@ import modelo.Gestor;
 import modelo.Reuniao;
 import modelo.Sala;
 import modelo.Usuario;
-import view.TelaUsuarioComum;
 import view.TelaUsuarioCoordenador;
 import view.TelaUsuarioGestor;
 import view.UsuarioComum;
@@ -95,6 +94,7 @@ public class MetodosEstaticos {
 				PreparedStatement pst = coneccao.prepareStatement("SELECT * FROM SALA "
 				          + "WHERE IDSALA = ? ");
 				pst.setInt(1, idSala);
+				resultSet = pst.executeQuery();
 				if(resultSet.next()) {
 					sala = new Sala(resultSet.getInt("IDSALA"), resultSet.getString("NOME_SALA"), resultSet.getString("PISO"), 
 							resultSet.getString("NUMERO"), resultSet.getInt("ID_LOCAL"));
@@ -106,22 +106,10 @@ public class MetodosEstaticos {
 			}
 		return sala;
 	}
-	//TALVEZ MODIFICAR O CAMPO SALA PARA DAR SUPORTE A NOMES DE SALA TIPO = "AUDITORIO CENTRAL" 
-	public static void criarReunaio(Connection c, PreparedStatement p, ResultSet r) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Scanner sc = new Scanner(System.in);
-		int idReuniao;
-		String local, sala, data;  
-		System.out.println("Digite os dados para cadastrar a reunião");
-		System.out.print("Local: ");
-		local = sc.next();
-		System.out.print("Sala:");
-		sala = sc.next();
-		System.out.print("Data no formato (aaaa-mm-dd):");
-		data = sc.next();
-		try {
-			// Verficação da Reuniao, retornando o ID da reuniao 
-			idReuniao = Validacao.verificarReuniao(local, sala, data, c, r);
+
+	// Verficação da Reuniao, retornando o ID da reuniao 
+	
+			/*idReuniao = Validacao.verificarReuniao(local, sala, data, c, r);
 			if(idReuniao > 0) { 
 				p = c.prepareStatement("INSERT INTO REUNIAO VALUES(?, ?, ?, ?)"); // AUTO INCREMENTE NAO PRECISA, PQ É FEITO PELO PROPRIO MySQL!!
 				p.setString(1, null);
@@ -134,26 +122,19 @@ public class MetodosEstaticos {
 				System.out.println("Reuniao criada com sucesso!");
 			}else {
 				System.out.println("Esse Local e Horario já estao reservados");
-			}
-		}catch(SQLException | ParseException e) { 
-			System.out.println(e.getMessage());
-		}
- }
+			}*/
+
 	// FUNCIONANDO
 	public static void confirmarParticipacao(Usuario usuario, Connection con, ResultSet rt, PreparedStatement pst) {
 		
 		Scanner inp = new Scanner(System.in);
-		String local, sala, data, confirmacao;
+		String horario, data, confirmacao = null;
+		data = null;
+		horario = null;
+		int id = 0;
 		boolean controle = true;
-		System.out.println("Digite os dados da reunião:");// ESSA LINHA NAO FOI LIDA ?
-		System.out.print("Local: ");
-		local = inp.next();
-		System.out.print("Sala:");
-		sala = inp.next();
-		System.out.print("Data:");
-		data = inp.next();
 		try {
-			int idReuniao = Validacao.verificarReuniao(local, sala, data, con, rt);
+			int idReuniao = Validacao.verificarReuniao(id, horario, data, con, rt);
 			if(idReuniao == 0) {
 				System.out.println("Nao existe essa reuniao!");
 			}else if(idReuniao > 0) {
@@ -258,19 +239,14 @@ public class MetodosEstaticos {
 	}
 	// FUNCIONANDO!!
 	public static void addParticipante(Connection coneccao, PreparedStatement pst, ResultSet rts) {
-		Scanner inp = new Scanner(System.in);
-		String local, sala, data;
-		System.out.println("Digite os dados da reunião:");
-		System.out.print("Local: ");
-		local = inp.next();
-		System.out.print("Sala:");
-		sala = inp.next();
-		System.out.print("Data:");
-		data = inp.next();
+		String horario, data, cpf = null;
+		data = null;
+		horario = null;
+		int id = 0;
 		try {
-			int idReuniao = Validacao.verificarReuniao(local, sala, data, coneccao, rts);
+			int idReuniao = Validacao.verificarReuniao(id, data, horario, coneccao, rts);
 			System.out.println("Digite o CPF do participante: ");
-			String cpf = inp.next();
+			//String cpf = inp.next();
 			int idUsuario = Validacao.verificarUsuario(cpf, coneccao, rts);
 			if((idReuniao > 0 ) && (idUsuario > 0)) {// faltou tratar alguns possiveis erros, mas o proprio MySLQ vai fazer isso!?
 				pst = coneccao.prepareStatement("INSERT INTO PESSAO_REUNIAO VALUES(?, ?, ?)");
@@ -292,14 +268,22 @@ public class MetodosEstaticos {
 	}
 	
 	// TRABALHAR NESSE METODOS AGORA, SEM PERCA DE TEMPO!!
-	public static void listarReunioes(Connection coneccao, Statement st, ResultSet rts) {
+	public static void listarReunioesPublicas(Connection coneccao, Statement st, ResultSet rts) {
 		System.out.println("Imprimindo as reuniões publicas");
 		try {
 			st = coneccao.createStatement();
-			rts = st.executeQuery("SELECT LOCAL, SALA, DATA, ID_PESSOA FROM REUNIAO "
-					+"WHERE ACESSIBIIDADE = 'PUBLICO' ");
+			rts = st.executeQuery("SELECT NOME, NOME_LOCAL, NOME_SALA, DATA_IN, DATA_FN, CONFIRMAR_SALA "
+					+"FROM SALA "
+					+"INNER JOIN LOCAL "
+					+"ON IDLOCAL = ID_LOCAL "
+					+"INNER JOIN REUNIAO "
+					+"ON IDSALA = ID_SALA "
+					+"INNER JOIN USUARIO "
+					+"ON IDUSUARIO = ID_USUARIO "
+					+"WHERE ACESSO = 'PUBLICO'");
 			int num = 1;
-			while(rts.next()) {
+			
+			while(rts.next()) {// AO INVES DE DÁ O PRINT VOU ADD NAS LINHAS DE CADA COLUNA!!
 				System.out.println("Reuniao n° "+num);
 				System.out.print("LOCAL: "+rts.getString("LOCAL")+" / ");
 				System.out.print("SALA: "+rts.getString("SALA")+" / ");
