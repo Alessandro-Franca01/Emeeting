@@ -10,7 +10,9 @@ public class Gestor extends Usuario{
 		super(idUser, nome, cpf, tipo, senha, email);
 	}
 	
-	// Classe somento com os metodos, sem atributos
+	// Criar os metodos do Gestor!
+	
+	
 	
 	
 }

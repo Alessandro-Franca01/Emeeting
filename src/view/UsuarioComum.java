@@ -45,6 +45,8 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 /**
  *
@@ -435,9 +437,6 @@ public class UsuarioComum extends javax.swing.JFrame {
                 btCancelarReuniao.setAction(acLimparCadReuniao);
                 btCadastrarReuniao = new javax.swing.JButton();
                 btCadastrarReuniao.setAction(acCadReuniao);
-                //jDateChooser1 = new com.toedter.calendar.JDateChooser();
-                cbInicioReuniao = new javax.swing.JComboBox();
-                cbInicioReuniao.setMaximumRowCount(14);
                 jPanel9 = new javax.swing.JPanel();
                 jLabel18 = new javax.swing.JLabel();
                 jLabel19 = new javax.swing.JLabel();
@@ -458,22 +457,15 @@ public class UsuarioComum extends javax.swing.JFrame {
                                 jLabel9.setText("Data");
                                 
                                         jLabel10.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-                                        jLabel10.setText("In\u00EDcio");
+                                        jLabel10.setText("Per\u00EDodo");
                                         
                                                 btCancelarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
                                                 btCancelarReuniao.setText("Cancelar");
                                                 
                                                         btCadastrarReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
                                                         btCadastrarReuniao.setText("Confirmar");
-                                                        
-                                                                cbInicioReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14)); // NOI18N
-                                                                cbInicioReuniao.setModel(new DefaultComboBoxModel(new String[] {"07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00"}));
                                                                 
                                                                 ftfDataReuniao = new JFormattedTextField();
-                                                                
-                                                                JLabel lblDurao = new JLabel();
-                                                                lblDurao.setText("Termino");
-                                                                lblDurao.setFont(new Font("Candara", Font.BOLD, 14));
                                                                 
                                                                 cbTerminoReuniao = new JComboBox();
                                                                 cbTerminoReuniao.setMaximumRowCount(14);
@@ -481,7 +473,7 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                 cbTerminoReuniao.setFont(new Font("Times New Roman", Font.BOLD, 14));
                                                                 
                                                                 JLabel lblIdLocal = new JLabel();
-                                                                lblIdLocal.setText("ID Sala");
+                                                                lblIdLocal.setText("Nome da Sala");
                                                                 lblIdLocal.setFont(new Font("Candara", Font.BOLD, 14));
                                                                 
                                                                 tfIdSala = new JTextField();
@@ -504,58 +496,82 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                 label.setFont(new Font("Candara", Font.BOLD, 14));
                                                                                 
                                                                                 tfNomeLocalCadReuniao = new JTextField();
+                                                                                        
+                                                                                        JRadioButton rdbtnManh = new JRadioButton("Manh\u00E2");
+                                                                                        buttonGroup.add(rdbtnManh);
+                                                                                        
+                                                                                        JRadioButton rdbtnTarde = new JRadioButton("Tarde");
+                                                                                        buttonGroup.add(rdbtnTarde);
+                                                                                        
+                                                                                        JRadioButton rdbtnNoite = new JRadioButton("Noite");
+                                                                                        buttonGroup.add(rdbtnNoite);
                                                                                 
                                                                                         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
                                                                                         jPanel8Layout.setHorizontalGroup(
                                                                                         	jPanel8Layout.createParallelGroup(Alignment.LEADING)
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
-                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-                                                                                        					.addContainerGap(234, Short.MAX_VALUE))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-                                                                                        						.addComponent(jLabel10)
-                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        							.addGap(97)
-                                                                                        							.addComponent(jLabel8))
-                                                                                        						.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
-                                                                                        							.addComponent(cbTerminoReuniao, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                                                                                        							.addComponent(cbInicioReuniao, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                                                                        					.addContainerGap(89, Short.MAX_VALUE))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(lblDurao, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                                                                                        					.addGap(216))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(jLabel23)
-                                                                                        					.addContainerGap(248, Short.MAX_VALUE))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-                                                                                        					.addContainerGap(183, Short.MAX_VALUE))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addGap(22)
-                                                                                        					.addComponent(btCancelarReuniao)
-                                                                                        					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                                                                                        					.addComponent(btCadastrarReuniao)
-                                                                                        					.addGap(41))
-                                                                                        				.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-                                                                                        					.addGap(18))
-                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(jLabel9)
-                                                                                        					.addContainerGap(262, Short.MAX_VALUE))
+                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING)
                                                                                         				.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         					.addComponent(label, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-                                                                                        					.addContainerGap(200, Short.MAX_VALUE))
-                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        					.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-                                                                                        					.addContainerGap(19, Short.MAX_VALUE))
-                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING, false)
-                                                                                        						.addComponent(tfIdSala, Alignment.LEADING)
-                                                                                        						.addComponent(ftfDataReuniao, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
-                                                                                        					.addContainerGap(150, Short.MAX_VALUE))))
+                                                                                        					.addContainerGap(220, Short.MAX_VALUE))
+                                                                                        				.addGroup(Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        						.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        							.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        								.addComponent(rdbtnManh)
+                                                                                        								.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        								.addComponent(rdbtnTarde))
+                                                                                        							.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        								.addComponent(lblIdLocal, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                                                                                        								.addPreferredGap(ComponentPlacement.RELATED)))
+                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        							.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+                                                                                        							.addPreferredGap(ComponentPlacement.RELATED)))
+                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        							.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        							.addComponent(rdbtnNoite)
+                                                                                        							.addContainerGap())
+                                                                                        						.addGroup(Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                                                                        							.addGap(126)
+                                                                                        							.addComponent(cbTerminoReuniao, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+                                                                                        							.addGap(86))))
+                                                                                        				.addGroup(Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING)
+                                                                                        						.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+                                                                                        						.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
+                                                                                        					.addContainerGap(39, Short.MAX_VALUE))))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addGap(31)
+                                                                                        			.addComponent(btCancelarReuniao)
+                                                                                        			.addGap(44)
+                                                                                        			.addComponent(btCadastrarReuniao)
+                                                                                        			.addContainerGap(113, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addGap(64)
+                                                                                        			.addComponent(jLabel8)
+                                                                                        			.addContainerGap(198, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(jLabel10)
+                                                                                        			.addContainerGap(309, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addContainerGap(281, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(jLabel23, GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                                                                                        			.addGap(280))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(jLabel9)
+                                                                                        			.addContainerGap(328, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addContainerGap(216, Short.MAX_VALUE))
                                                                                         );
                                                                                         jPanel8Layout.setVerticalGroup(
                                                                                         	jPanel8Layout.createParallelGroup(Alignment.LEADING)
@@ -566,33 +582,37 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                         			.addComponent(label, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
                                                                                         			.addGap(4)
                                                                                         			.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addGap(18)
+                                                                                        			.addGap(13)
                                                                                         			.addComponent(jLabel10)
                                                                                         			.addPreferredGap(ComponentPlacement.UNRELATED)
-                                                                                        			.addComponent(cbInicioReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
-                                                                                        			.addComponent(lblDurao, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
-                                                                                        			.addComponent(cbTerminoReuniao, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
-                                                                                        			.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
-                                                                                        			.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
+                                                                                        				.addComponent(rdbtnManh)
+                                                                                        				.addComponent(rdbtnTarde)
+                                                                                        				.addComponent(rdbtnNoite))
+                                                                                        			.addGap(18)
                                                                                         			.addComponent(jLabel23)
                                                                                         			.addPreferredGap(ComponentPlacement.RELATED)
                                                                                         			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        			.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGap(22)
+                                                                                        					.addComponent(cbTerminoReuniao, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+                                                                                        				.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        					.addGap(18)
+                                                                                        					.addComponent(lblIdLocal, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+                                                                                        					.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        					.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
                                                                                         			.addComponent(jLabel9)
                                                                                         			.addPreferredGap(ComponentPlacement.RELATED)
                                                                                         			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                                                                                        			.addGap(33)
                                                                                         			.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addPreferredGap(ComponentPlacement.UNRELATED)
+                                                                                        			.addGap(29)
                                                                                         			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
                                                                                         				.addComponent(btCancelarReuniao)
                                                                                         				.addComponent(btCadastrarReuniao))
-                                                                                        			.addGap(25))
+                                                                                        			.addGap(29))
                                                                                         );
                                                                                         jPanel8.setLayout(jPanel8Layout);
                                                                                         
@@ -716,22 +736,25 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                                                                                                 	jPanel7Layout.createParallelGroup(Alignment.LEADING)
                                                                                                                                                                 		.addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                                                                                 			.addContainerGap()
-                                                                                                                                                                			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                                                                                                			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addGap(29)
                                                                                                                                                                 			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                			.addPreferredGap(ComponentPlacement.RELATED)
-                                                                                                                                                                			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addGap(18)
+                                                                                                                                                                			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
                                                                                                                                                                 			.addContainerGap(19, Short.MAX_VALUE))
                                                                                                                                                                 );
                                                                                                                                                                 jPanel7Layout.setVerticalGroup(
                                                                                                                                                                 	jPanel7Layout.createParallelGroup(Alignment.TRAILING)
-                                                                                                                                                                		.addGroup(jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                		.addGroup(Alignment.LEADING, jPanel7Layout.createSequentialGroup()
                                                                                                                                                                 			.addContainerGap()
                                                                                                                                                                 			.addGroup(jPanel7Layout.createParallelGroup(Alignment.LEADING)
-                                                                                                                                                                				.addComponent(jPanel9, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                                                                                				.addComponent(jPanel8, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
-                                                                                                                                                                			.addContainerGap())
-                                                                                                                                                                		.addComponent(jSeparator2, GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                                                                                                                                                                				.addGroup(jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                					.addComponent(jPanel9, GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                                                                                                                                                                					.addContainerGap())
+                                                                                                                                                                				.addGroup(jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                					.addComponent(jPanel8, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                                                                                                					.addContainerGap())
+                                                                                                                                                                				.addComponent(jSeparator2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)))
                                                                                                                                                                 );
                                                                                                                                                                 jPanel7.setLayout(jPanel7Layout);
                                                                                                                                                                 
@@ -938,7 +961,6 @@ public class UsuarioComum extends javax.swing.JFrame {
     private javax.swing.JButton btCancelarReuniao;
     private javax.swing.JButton btCadastrarReuniao;
     private javax.swing.JComboBox cbAcessoReuniao;
-    private javax.swing.JComboBox cbInicioReuniao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
@@ -992,6 +1014,7 @@ public class UsuarioComum extends javax.swing.JFrame {
     private final Action acLimparCadReuniao = new SwingAction_7();
     private final Action acMostrarRePublica = new SwingAction_8();
     private JButton btnMostrarReunisConvidadas;
+    private final ButtonGroup buttonGroup = new ButtonGroup();
    
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {

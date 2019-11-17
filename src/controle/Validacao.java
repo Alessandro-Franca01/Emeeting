@@ -12,20 +12,20 @@ import java.sql.PreparedStatement;
 
 public class Validacao {
 	// Consulta o banco e retorna o ID da reuniao, ela existir - TESTAR !!
-	public static int verificarReuniao(int idSala, String data, String horario, Connection conec,ResultSet re) { 
+	public static int verificarReuniao(int idSala, String data, String periodo, Connection conec,ResultSet rt) { 
 	    int idReuniao = 0;
 		try {
-			String dataMysql = data+" "+horario;
-		PreparedStatement pst = conec.prepareStatement("SELECT DATA_IN, IDREUNIAO, NOME_SALA " 
-														+"FROM REUNIAO "
-														+"INNER JOIN SALA "
-														+"ON IDSALA = ID_SALA "
-														+"WHERE DATA_IN = ? AND ID_SALA = ?");
-					pst.setString(1, dataMysql);
+			PreparedStatement pst = conec.prepareStatement("SELECT DATA_REUNIAO, PERIODO, IDREUNIAO, IDSALA, IDREUNIAO "  
+													+"FROM REUNIAO "
+													+"INNER JOIN SALA "
+													+"ON IDSALA = ID_SALA "
+													+"WHERE DATA_REUNIAO = '?' AND ID_SALA = ? AND PERIODO = ?");
+					pst.setString(1, data);
 					pst.setInt(2, idSala);
-					re = pst.executeQuery();
-					if (re.next()) { 
-						idReuniao = re.getInt("IDREUNIAO");
+					pst.setString(3, periodo);
+					rt = pst.executeQuery();
+					if (rt.next()) { 
+						idReuniao = rt.getInt("IDREUNIAO");
 						System.out.println("O ID da reuniao é = "+idReuniao);
 					}else {
 						System.out.println("Essa reuniao nao existe!");

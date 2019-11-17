@@ -18,6 +18,7 @@ import modelo.Usuario;
 import view.TelaUsuarioCoordenador;
 import view.TelaUsuarioGestor;
 import view.UsuarioComum;
+import view.UsuarioGestor;
 import controle.Validacao;
 
 public class MetodosEstaticos {
@@ -68,8 +69,10 @@ public class MetodosEstaticos {
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
-							TelaUsuarioGestor frameGestor = new TelaUsuarioGestor();
+							UsuarioGestor frameGestor = new UsuarioGestor();
 							frameGestor.setVisible(true);
+							frameGestor.receberUsuario((Gestor) user);
+							frameGestor.receberConeccao(coneccao);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

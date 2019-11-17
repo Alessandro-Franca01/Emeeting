@@ -96,10 +96,4 @@ public class Comum extends Usuario{
 				
 	}
 	
-	public Reuniao cadastroReuniao( ) {
-		Reuniao reuniao = null;
-		
-		return reuniao;
-	}
-	
 }
