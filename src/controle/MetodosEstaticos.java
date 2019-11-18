@@ -15,15 +15,14 @@ import modelo.Gestor;
 import modelo.Reuniao;
 import modelo.Sala;
 import modelo.Usuario;
-import view.TelaUsuarioCoordenador;
-import view.TelaUsuarioGestor;
 import view.UsuarioComum;
+import view.UsuarioCoordenador;
 import view.UsuarioGestor;
 import controle.Validacao;
 
 public class MetodosEstaticos {
 
-	// Fazer ajustes no banco e no metodo ( add coluna email, etc) - alteração no banco feito!
+	// Metodo de logar no sistema!!
 	public static Usuario logandoGui(Connection coneccao, Statement st, ResultSet resultSet, String nome, String senha) {
 		Usuario user = null;
 		try {
@@ -40,11 +39,12 @@ public class MetodosEstaticos {
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
-							UsuarioComum frameComum = new UsuarioComum();
-							frameComum.setVisible(true);
-							// Recebendo os dados passados na tela de Login!
+							UsuarioComum frameComum  = new UsuarioComum();
 							frameComum.receberUsuario((Comum) user);
 							frameComum.receberConeccao(coneccao);
+							frameComum.setVisible(true);
+							// Recebendo os dados passados na tela de Login!
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -56,7 +56,9 @@ public class MetodosEstaticos {
 						System.out.println(user.getClass());
 						System.out.println(user.toString());
 						try {
-							TelaUsuarioCoordenador frameCoordenador = new TelaUsuarioCoordenador();
+							UsuarioCoordenador frameCoordenador = new UsuarioCoordenador();
+							frameCoordenador.receberUsuario((Coordenador) user);
+							frameCoordenador.receberConeccao(coneccao);
 							frameCoordenador.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -109,23 +111,6 @@ public class MetodosEstaticos {
 			}
 		return sala;
 	}
-
-	// Verficação da Reuniao, retornando o ID da reuniao 
-	
-			/*idReuniao = Validacao.verificarReuniao(local, sala, data, c, r);
-			if(idReuniao > 0) { 
-				p = c.prepareStatement("INSERT INTO REUNIAO VALUES(?, ?, ?, ?)"); // AUTO INCREMENTE NAO PRECISA, PQ É FEITO PELO PROPRIO MySQL!!
-				p.setString(1, null);
-				p.setString(2, local);																
-				p.setString(3, sala);
-				p.setDate(4, new java.sql.Date(sdf.parse(data).getTime()));
-				int ver = p.executeUpdate();
-				System.out.println("Verificando linhas afetadas: "+ver);
-				c.commit();
-				System.out.println("Reuniao criada com sucesso!");
-			}else {
-				System.out.println("Esse Local e Horario já estao reservados");
-			}*/
 
 	// FUNCIONANDO
 	public static void confirmarParticipacao(Usuario usuario, Connection con, ResultSet rt, PreparedStatement pst) {
@@ -271,35 +256,44 @@ public class MetodosEstaticos {
 	}
 	
 	// TRABALHAR NESSE METODOS AGORA, SEM PERCA DE TEMPO!!
-	public static void listarReunioesPublicas(Connection coneccao, Statement st, ResultSet rts) {
+	public static String[] getRow(Connection coneccao, Statement st, ResultSet rts) {
 		System.out.println("Imprimindo as reuniões publicas");
+		String linha[] = new String[7];
+		//linha = {local, sala, piso, nome, periodo, data, confirmacao};
 		try {
 			st = coneccao.createStatement();
-			rts = st.executeQuery("SELECT NOME, NOME_LOCAL, NOME_SALA, DATA_IN, DATA_FN, CONFIRMAR_SALA "
-					+"FROM SALA "
-					+"INNER JOIN LOCAL "
-					+"ON IDLOCAL = ID_LOCAL "
-					+"INNER JOIN REUNIAO "
-					+"ON IDSALA = ID_SALA "
-					+"INNER JOIN USUARIO "
-					+"ON IDUSUARIO = ID_USUARIO "
-					+"WHERE ACESSO = 'PUBLICO'");
+			rts = st.executeQuery("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, NOME_LOCAL, NOME, PISO, CONFIRMAR_SALA "
+								+"FROM SALA "
+								+"INNER JOIN LOCAL "
+								+"ON IDLOCAL = ID_LOCAL "
+								+"INNER JOIN REUNIAO "
+								+"ON IDSALA = ID_SALA "
+								+"INNER JOIN USUARIO "
+								+"ON IDUSUARIO = ID_USUARIO "
+								+"WHERE ACESSO = 'PUBLICO' ");
 			int num = 1;
 			
 			while(rts.next()) {// AO INVES DE DÁ O PRINT VOU ADD NAS LINHAS DE CADA COLUNA!!
-				System.out.println("Reuniao n° "+num);
-				System.out.print("LOCAL: "+rts.getString("LOCAL")+" / ");
-				System.out.print("SALA: "+rts.getString("SALA")+" / ");
-				System.out.print("DATA: "+rts.getString("DATA")+" / ");
-				System.out.println("ID PROPRIETARIO: "+rts.getInt("ID_PESSOA"));
+				//String local, sala, nome, periodo, confirmacao, piso , data;
+				linha[0] =rts.getString("NOME_LOCAL");
+				linha[1] = rts.getString("NOME_SALA");
+				linha[2] = rts.getString("DATA_REUNIAO");
+				linha[3] = rts.getString("NOME");
+				linha[4] = rts.getString("PERIODO");
+				linha[5] = rts.getString("PISO");
+				linha[6] = rts.getString("CONFIRMAR_SALA");
+				//System.out.println(local+"/"+sala+"/"+piso+"/"+nome+"/"+periodo+"/"+data+"/"+confirmacao);
+				//linha = {local, sala, piso, nome, periodo, data, confirmacao};
+				//linha[1] = local;
 				num += 1;
 		}
+			System.out.println("Numero do linhas: "+num);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return linha;
 		
 	}
 }

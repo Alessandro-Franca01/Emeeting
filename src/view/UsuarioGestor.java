@@ -4,17 +4,14 @@
  * and open the template in the editor.
  */
 package view;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
-import modelo.Comum;
+
+import controle.MetodosEstaticos;
+import dao.Db;
 import modelo.Gestor;
 import modelo.Usuario;
 
-/**
- *
- * @author Carlos Jr
- */
 public class UsuarioGestor extends javax.swing.JFrame {
 
     /**

@@ -11,8 +11,8 @@ import javax.swing.AbstractAction;
 import java.sql.PreparedStatement;
 
 public class Validacao {
-	// Consulta o banco e retorna o ID da reuniao, ela existir - TESTAR !!
-	public static int verificarReuniao(int idSala, String data, String periodo, Connection conec,ResultSet rt) { 
+	// Pronto, isso é para funcionar já!
+	public static int verificarReuniao(int idSala, String data, String periodo, Connection conec ,ResultSet rt) { 
 	    int idReuniao = 0;
 		try {
 			PreparedStatement pst = conec.prepareStatement("SELECT DATA_REUNIAO, PERIODO, IDREUNIAO, IDSALA, IDREUNIAO "  
