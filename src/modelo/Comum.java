@@ -27,7 +27,7 @@ public class Comum extends Usuario{
 			// Verficação da Reuniao, retornando o ID da reuniao 
 			int idReuniao = Validacao.verificarReuniao(idSala, data, periodo, conect, rt);
 			if(idReuniao == 0) { 
-				pst = conect.prepareStatement("INSERT INTO REUNIAO(IDREUNIAO, ID_SALA, ID_USUARIO, DATA_REUNIAO, CONFIRMAR_SALA, ACESSO, PERIODO)"
+				pst = conect.prepareStatement("INSERT INTO REUNIAO(IDREUNIAO, ID_SALA, PROPRIETARIO, DATA_REUNIAO, CONFIRMAR_SALA, ACESSO, PERIODO)"
 									+ " VALUES( ?, ?, ?, ?, ?, ?, ?)"); // AUTO INCREMENTE NAO PRECISA, PQ É FEITO PELO PROPRIO MySQL!!
 				pst.setString(1, null);
 				pst.setInt(2, idSala);																
@@ -94,11 +94,102 @@ public class Comum extends Usuario{
 					System.out.println("Esse Id não existe!");
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		return user;
 				
 	}
+	// TESTAR, AMANHA !!
+	public Object[] pesquisarReuniao(String local, String sala ,String data, String periodo, Connection conec ,ResultSet rt) {
+		Object dados[] = new Object[8];
+		try {
+			PreparedStatement pst = conec.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, ESTADO, IDREUNIAO "
+														+"FROM SALA "
+														+"INNER JOIN LOCAL "
+														+"ON IDLOCAL = ID_LOCAL "
+														+"INNER JOIN REUNIAO "
+														+"ON IDSALA = ID_SALA "
+														+"WHERE PERIODO = ? AND DATA_REUNIAO = ? "
+														+"AND NOME_SALA = ? AND NOME_LOCAL = ? ");
+			
+					pst.setString(1, periodo);
+					pst.setString(2, data);
+					pst.setString(3, sala);
+					pst.setString(4, local);
+					rt = pst.executeQuery();
+					if (rt.next()) { 
+						dados[0] = rt.getInt("IDREUNIAO");
+						dados[1] = rt.getString("PERIODO");
+						dados[2] = rt.getString("DATA_REUNIAO");
+						dados[3] = rt.getString("NOME_SALA");
+						dados[4] = rt.getString("PISO");
+						dados[5] = rt.getString("NOME_LOCAL");
+						dados[6] = rt.getString("CIDADE");
+						dados[7] = rt.getString("ESTADO");						
+					}else {
+						System.out.println("Essa reuniao nao existe!");
+					}
+				}catch(SQLException e) {
+					System.out.println(e.getMessage());
+				}
+		return dados;
+	}
+	// Funcionando!!!
+	public void confirmarParticipante(Connection coneccao, ResultSet rt, int idReuniao, int idUsuario, String confirmacao ) {
+		// Tem que fazer a verificaçao ainda!!
+		try {
+			String participacao = null;
+			PreparedStatement pstPesquisa = coneccao.prepareStatement("SELECT PARTICIPACAO FROM USUARIO__REUNIAO "
+															+"WHERE ID_USUARIO = ? AND ID_REUNIAO = ? ");
+			pstPesquisa.setInt(1, idUsuario);
+			pstPesquisa.setInt(2, idReuniao);
+			rt = pstPesquisa.executeQuery();
+			if(rt.next()) {
+				participacao = rt.getString("PARTICIPACAO");
+			}
+			if(participacao.equalsIgnoreCase("aguardando")) {
+				PreparedStatement pst = coneccao.prepareStatement("UPDATE USUARIO__REUNIAO "
+																	+"SET PARTICIPACAO = ? "
+																	+"WHERE ID_REUNIAO = ? AND ID_USUARIO = ?");
+					pst.setString(1, confirmacao);
+					pst.setInt(2, idReuniao);
+					pst.setInt(3, idUsuario);
+					int resultado = pst.executeUpdate();
+					System.out.println("Verificando update: "+resultado);
+					coneccao.commit();
+					
+			}else if(participacao.equalsIgnoreCase("nao")) {
+				System.out.println("Participação Negada!");
+				
+			}else if(participacao.equalsIgnoreCase("sim")) { 
+				System.out.println("Voce já confirmou essa reuniao!");
+			}else {
+				System.out.println("Usuario nao esta convidado ou reuniao não existe!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	// FAZER TESTES!!
+	public boolean AddParticipante(String cpf, int idReuniao, Connection con, ResultSet pesquisa) {
+		int idUser =Validacao.verificarUsuario(cpf, con, pesquisa);
+		boolean retorno = false;
+		if(idUser > 0) {
+			try {
+				PreparedStatement pst = con.prepareStatement("INSERT INTO USUARIO__REUNIAO VALUES( ?,  ?, ?) "); // testar essa query!
+				
+						pst.setInt(1, idReuniao);
+						pst.setInt(2, idUser);
+						pst.setString(3, "AGUARDANDO");
+						int ver = pst.executeUpdate();
+						retorno = true;
+						System.out.println("Linhas afetas: "+ver);
+					}catch(SQLException e) {
+						System.out.println(e.getMessage());
+					}
+			}
+		return retorno;
+		}
 	
+			
 }

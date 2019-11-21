@@ -68,7 +68,7 @@ public class Validacao {
 			pst.setString(2, nomeLocal);
 			pst.setString(3, cidade);
 			pesquisa = pst.executeQuery();
-			if (pesquisa.next()) { // erro aqui!!???
+			if (pesquisa.next()) { 
 				idSala = pesquisa.getInt("IDSALA");
 				System.out.println("O id da sala é: "+idSala);
 			}else {
@@ -79,6 +79,27 @@ public class Validacao {
 		}
 			
 		return idSala;
+	}
+	// Fazer testes!!
+	public static int verificarLocal(Connection con, ResultSet pesquisa, String local, String estado, String cidade) {
+		int idLocal = 0;
+		try {
+			PreparedStatement pst = con.prepareStatement("SELECT IDLOCAL FROM LOCAL "
+														+"WHERE NOME_LOCAL = ? AND CIDADE = ? AND ESTADO = ? ");
+			pst.setString(1, local);
+			pst.setString(2, cidade);
+			pst.setString(3, estado);
+			pesquisa = pst.executeQuery();
+			if (pesquisa.next()) { 
+				idLocal = pesquisa.getInt("IDLOCAL");
+				System.out.println("O id do local é: "+idLocal);
+			}else {
+				System.out.println("Usuário não cadastrado!");
+			}
+		}catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return idLocal;
 	}
 	
 }

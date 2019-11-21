@@ -55,6 +55,12 @@ import javax.swing.UIManager;
 import java.awt.SystemColor;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JScrollBar;
+import javax.swing.JTextArea;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import javax.swing.JEditorPane;
 
 /**
  *
@@ -65,7 +71,8 @@ public class UsuarioComum extends javax.swing.JFrame {
     /**
      * Creates new form UsuarioComum
      */
-	
+	private JRadioButton rdbtnNo;
+	private JRadioButton rdbtnSim;
 	private JLabel lbConfirmacaoCadastro;
 	private JFormattedTextField ftCpfCadastro;
 	private JTextPane tpnDadosUsuario;
@@ -87,6 +94,16 @@ public class UsuarioComum extends javax.swing.JFrame {
     private JRadioButton rdbtnTarde;
     private JRadioButton rdbtnNoite;
     private DefaultTableModel modeloPublico;
+    private DefaultTableModel modeloTbConfReunioes;
+    private JFormattedTextField ftfDataPesqReuniao;
+    private JRadioButton rbManhaPesqReuniao;
+    private JRadioButton rbTardePesqReuinao;
+    private JRadioButton rbNoitePesqReuniao;
+    private JTextPane pntDadosPesqReuniao;
+    private JButton btnLimpPesqReuniao;
+    private JButton btLimparAddPartcipante;
+    private JButton btConfAddParticipante;
+    private JFormattedTextField ftfCpfParticipante;
     
     // Declarando objetos uteis
  	Statement st = null;
@@ -98,6 +115,7 @@ public class UsuarioComum extends javax.swing.JFrame {
  	// Manipulando tabelas
  	int quantidadeLinhas; // vai receber a quantidade de rows do banco de dados e passar para a tabela
  	Object[] linha = new Object[7];
+ 	Object[] linhasTbReunioesConf = new Object[7];
  	
     public void receberUsuario(Comum userComum) {
 		System.out.println("Recebendo o objeto usuario!");
@@ -459,10 +477,6 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                 
                                                                 tfIdSala = new JTextField();
                                                                 tfIdSala.setColumns(10);
-                                                                
-                                                                JLabel lblSala = new JLabel();
-                                                                lblSala.setText("Verifique seus dados antes de confirmar");
-                                                                lblSala.setFont(new Font("Candara", Font.BOLD, 14));
                                                                 cbAcessoReuniao = new javax.swing.JComboBox();
                                                                 
                                                                         cbAcessoReuniao.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
@@ -479,13 +493,17 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                 tfNomeLocalCadReuniao = new JTextField();
                                                                                 
                                                                                         rdbtnManha = new JRadioButton("Manh\u00E2");
-                                                                                        buttonGroup.add(rdbtnManha);
+                                                                                        btGrupoCadReuniao.add(rdbtnManha);
                                                                                         
                                                                                         rdbtnTarde = new JRadioButton("Tarde");
-                                                                                        buttonGroup.add(rdbtnTarde);
+                                                                                        btGrupoCadReuniao.add(rdbtnTarde);
                                                                                         
                                                                                         rdbtnNoite = new JRadioButton("Noite");
-                                                                                        buttonGroup.add(rdbtnNoite);
+                                                                                        btGrupoCadReuniao.add(rdbtnNoite);
+                                                                                        
+                                                                                        JLabel label_6 = new JLabel("*Digite a data no formato: yyyy-mm-dd ");
+                                                                                        label_6.setForeground(Color.DARK_GRAY);
+                                                                                        label_6.setFont(new Font("SansSerif", Font.BOLD, 11));
                                                                                 
                                                                                         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
                                                                                         jPanel8Layout.setHorizontalGroup(
@@ -498,19 +516,13 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                         					.addContainerGap(220, Short.MAX_VALUE))
                                                                                         				.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         					.addGroup(jPanel8Layout.createParallelGroup(Alignment.LEADING)
-                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        							.addComponent(lblIdLocal, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                                                                                        							.addPreferredGap(ComponentPlacement.RELATED))
-                                                                                        						.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        							.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-                                                                                        							.addPreferredGap(ComponentPlacement.RELATED)))
-                                                                                        					.addPreferredGap(ComponentPlacement.RELATED)
+                                                                                        						.addComponent(lblIdLocal, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                                                                        						.addComponent(tfIdSala, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))
+                                                                                        					.addGap(4)
                                                                                         					.addComponent(cbTerminoReuniao, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
                                                                                         					.addGap(86))
                                                                                         				.addGroup(jPanel8Layout.createSequentialGroup()
-                                                                                        					.addGroup(jPanel8Layout.createParallelGroup(Alignment.TRAILING)
-                                                                                        						.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-                                                                                        						.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
+                                                                                        					.addComponent(tfNomeLocalCadReuniao, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
                                                                                         					.addContainerGap(39, Short.MAX_VALUE))
                                                                                         				.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         					.addComponent(rdbtnManha)
@@ -524,31 +536,35 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                         			.addComponent(btCancelarReuniao)
                                                                                         			.addGap(44)
                                                                                         			.addComponent(btCadastrarReuniao)
-                                                                                        			.addContainerGap(113, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(79, Short.MAX_VALUE))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addGap(64)
                                                                                         			.addComponent(jLabel8)
-                                                                                        			.addContainerGap(198, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(164, Short.MAX_VALUE))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
                                                                                         			.addComponent(jLabel10)
-                                                                                        			.addContainerGap(309, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(275, Short.MAX_VALUE))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
                                                                                         			.addComponent(cbAcessoReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addContainerGap(281, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(247, Short.MAX_VALUE))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
-                                                                                        			.addComponent(jLabel23, GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                                                                                        			.addComponent(jLabel23, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                         			.addGap(280))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
                                                                                         			.addComponent(jLabel9)
-                                                                                        			.addContainerGap(328, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(294, Short.MAX_VALUE))
                                                                                         		.addGroup(jPanel8Layout.createSequentialGroup()
                                                                                         			.addContainerGap()
                                                                                         			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addContainerGap(216, Short.MAX_VALUE))
+                                                                                        			.addContainerGap(182, Short.MAX_VALUE))
+                                                                                        		.addGroup(jPanel8Layout.createSequentialGroup()
+                                                                                        			.addContainerGap()
+                                                                                        			.addComponent(label_6, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addContainerGap(51, Short.MAX_VALUE))
                                                                                         );
                                                                                         jPanel8Layout.setVerticalGroup(
                                                                                         	jPanel8Layout.createParallelGroup(Alignment.LEADING)
@@ -583,9 +599,9 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                         			.addComponent(jLabel9)
                                                                                         			.addPreferredGap(ComponentPlacement.RELATED)
                                                                                         			.addComponent(ftfDataReuniao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addGap(33)
-                                                                                        			.addComponent(lblSala, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-                                                                                        			.addGap(29)
+                                                                                        			.addGap(18)
+                                                                                        			.addComponent(label_6, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+                                                                                        			.addGap(47)
                                                                                         			.addGroup(jPanel8Layout.createParallelGroup(Alignment.BASELINE)
                                                                                         				.addComponent(btCancelarReuniao)
                                                                                         				.addComponent(btCadastrarReuniao))
@@ -633,6 +649,7 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                                                                         tpDadosPesqSala.setText("Nome:\r\nID Sala:\r\nPiso:\r\nNumero:\r\nID Local:");
                                                                                                                                         
                                                                                                                                         lblNewLabel = new JLabel("*Dados em branco, quer dizer sem registro ");
+                                                                                                                                        lblNewLabel.setForeground(new Color(255, 99, 71));
                                                                                                                                         lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
                                                                                                                                         
                                                                                                                                                 javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -714,24 +731,24 @@ public class UsuarioComum extends javax.swing.JFrame {
                                                                                                                                                                 		.addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                                                                                 			.addContainerGap()
                                                                                                                                                                 			.addComponent(jPanel8, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                			.addGap(29)
-                                                                                                                                                                			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
                                                                                                                                                                 			.addGap(18)
-                                                                                                                                                                			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                			.addGap(18)
+                                                                                                                                                                			.addComponent(jPanel9, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
                                                                                                                                                                 			.addContainerGap(19, Short.MAX_VALUE))
                                                                                                                                                                 );
                                                                                                                                                                 jPanel7Layout.setVerticalGroup(
-                                                                                                                                                                	jPanel7Layout.createParallelGroup(Alignment.TRAILING)
-                                                                                                                                                                		.addGroup(Alignment.LEADING, jPanel7Layout.createSequentialGroup()
+                                                                                                                                                                	jPanel7Layout.createParallelGroup(Alignment.LEADING)
+                                                                                                                                                                		.addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                                                                                 			.addContainerGap()
                                                                                                                                                                 			.addGroup(jPanel7Layout.createParallelGroup(Alignment.LEADING)
                                                                                                                                                                 				.addGroup(jPanel7Layout.createSequentialGroup()
                                                                                                                                                                 					.addComponent(jPanel9, GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                                                                                                                                                                 					.addContainerGap())
+                                                                                                                                                                				.addComponent(jSeparator2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
                                                                                                                                                                 				.addGroup(jPanel7Layout.createSequentialGroup()
-                                                                                                                                                                					.addComponent(jPanel8, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                                                                                					.addContainerGap())
-                                                                                                                                                                				.addComponent(jSeparator2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)))
+                                                                                                                                                                					.addComponent(jPanel8, GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                                                                                                                                                                					.addContainerGap())))
                                                                                                                                                                 );
                                                                                                                                                                 jPanel7.setLayout(jPanel7Layout);
                                                                                                                                                                 
@@ -764,7 +781,7 @@ public class UsuarioComum extends javax.swing.JFrame {
                 
                 JScrollPane scrollPane = new JScrollPane();
                 
-                JLabel lblReuniesConvidadas = new JLabel("Reuni\u00F5es Convidadas");
+                JLabel lblReuniesConvidadas = new JLabel("Reuni\u00F5es Confirmadas");
                 lblReuniesConvidadas.setFont(new Font("Times New Roman", Font.BOLD, 14));
                         
                         JButton btMostrar = new JButton("Mostrar");
@@ -773,6 +790,7 @@ public class UsuarioComum extends javax.swing.JFrame {
                         btMostrar.setAction(acMostrarRePublica);
                         
                         btnMostrarReunisConvidadas = new JButton("Mostrar");
+                        btnMostrarReunisConvidadas.setAction(acMostrarReunioesConf);
                         btnMostrarReunisConvidadas.setForeground(Color.BLACK);
                         btnMostrarReunisConvidadas.setBackground(UIManager.getColor("Button.background"));
                         
@@ -780,6 +798,7 @@ public class UsuarioComum extends javax.swing.JFrame {
                         btnLimpar.setAction(acLimpTbRePublica);
                         
                         JButton btnLimpar_1 = new JButton("Limpar");
+                        btnLimpar_1.setAction(acLimparTbReunioesConf);
                 
                         javax.swing.GroupLayout gl_pnVisualizacao = new javax.swing.GroupLayout(pnVisualizacao);
                         gl_pnVisualizacao.setHorizontalGroup(
@@ -830,29 +849,23 @@ public class UsuarioComum extends javax.swing.JFrame {
                         			.addContainerGap(28, Short.MAX_VALUE))
                         );
                         
-                        tbReunioesConvidadas = new JTable();
-                        tbReunioesConvidadas.setModel(new DefaultTableModel(
+                        tbReunioesConfirmadas = new JTable();
+                       /* tbReunioesConfirmadas.setModel(new DefaultTableModel(
                         	new Object[][] {
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
-                        		{null, null, null, null, null, null, null},
                         		{null, null, null, null, null, null, null},
                         	},
                         	new String[] {
-                        		"Propriet\u00E1rio", "Local", "Sala", "Piso", "In\u00EDcio", "T\u00E9rmino", "Confirma\u00E7\u00E3o"
+                        		"Sala", "Cidade", "Local", "Periodo", "Piso", "Data", "Confirma\u00E7\u00E3o"
                         	}
-                        ));
-                        scrollPane.setViewportView(tbReunioesConvidadas);
+                        ));*/ 
+                     // colocar isso tudo para fora desse metodo!!
+                        Object[] colunaTbConfirmacao = {"Sala", "Cidade", "Local", "Periodo", "Piso", "Data", "Confirma\u00E7\u00E3o"};
+                        modeloTbConfReunioes = new DefaultTableModel(0,1); // instanciar fora do metodo
+                        modeloTbConfReunioes.setColumnIdentifiers(colunaTbConfirmacao);        	
+                        tbReunioesConfirmadas.setModel(modeloTbConfReunioes);
+                        
+                        
+                        scrollPane.setViewportView(tbReunioesConfirmadas);
                         pnVisualizacao.setLayout(gl_pnVisualizacao);
                         
                                 jTabbedPane1.addTab("Vizualizar Reuniões", pnVisualizacao);
@@ -881,31 +894,34 @@ public class UsuarioComum extends javax.swing.JFrame {
         lblIdReunio.setBounds(23, 45, 73, 14);
         panel.add(lblIdReunio);
         
-        textField = new JTextField();
-        textField.setBounds(23, 73, 134, 29);
-        panel.add(textField);
-        textField.setColumns(10);
+        tfConfParIdReuniao = new JTextField();
+        tfConfParIdReuniao.setBounds(23, 73, 134, 29);
+        panel.add(tfConfParIdReuniao);
+        tfConfParIdReuniao.setColumns(10);
         
         JLabel lblConfirmao = new JLabel("Confirma\u00E7\u00E3o");
         lblConfirmao.setFont(new Font("Tahoma", Font.BOLD, 11));
         lblConfirmao.setBounds(23, 120, 89, 21);
         panel.add(lblConfirmao);
         
-        JRadioButton rdbtnSim = new JRadioButton("Sim");
+        rdbtnSim = new JRadioButton("Sim");
+        btGrupoConfParticipacao.add(rdbtnSim);
         rdbtnSim.setBounds(23, 148, 56, 23);
         panel.add(rdbtnSim);
         
-        JRadioButton rdbtnNo = new JRadioButton("N\u00E3o");
+        rdbtnNo = new JRadioButton("N\u00E3o");
+        btGrupoConfParticipacao.add(rdbtnNo);
         rdbtnNo.setBounds(88, 148, 56, 23);
         panel.add(rdbtnNo);
         
         JButton btnConfirmar = new JButton("Enviar");
+        btnConfirmar.setAction(acConfirmarParticipacao);
         btnConfirmar.setBounds(23, 198, 89, 29);
         panel.add(btnConfirmar);
         
-        JButton btnLimpar_2 = new JButton("Limpar");
-        btnLimpar_2.setBounds(149, 198, 89, 29);
-        panel.add(btnLimpar_2);
+        JButton btnLimpaConfirmacaoPart = new JButton("Limpar");
+        btnLimpaConfirmacaoPart.setBounds(149, 198, 89, 29);
+        panel.add(btnLimpaConfirmacaoPart);
         
         JLabel lblCasoNoSaiba = new JLabel("*caso n\u00E3o saiba o ID da reuni\u00E3o ");
         lblCasoNoSaiba.setBounds(50, 238, 188, 14);
@@ -930,27 +946,29 @@ public class UsuarioComum extends javax.swing.JFrame {
         lblCpf.setBounds(25, 43, 132, 14);
         panel_1.add(lblCpf);
         
-        JFormattedTextField formattedTextField = new JFormattedTextField();
-        formattedTextField.setBounds(25, 68, 165, 29);
-        panel_1.add(formattedTextField);
+        ftfCpfParticipante = new JFormattedTextField();
+        ftfCpfParticipante.setBounds(25, 68, 165, 29);
+        panel_1.add(ftfCpfParticipante);
         
         JLabel label_1 = new JLabel("ID Reuni\u00E3o");
         label_1.setFont(new Font("Tahoma", Font.BOLD, 11));
         label_1.setBounds(25, 113, 73, 14);
         panel_1.add(label_1);
         
-        textField_1 = new JTextField();
-        textField_1.setBounds(25, 141, 116, 29);
-        panel_1.add(textField_1);
-        textField_1.setColumns(10);
+        tfIdReuniaoAddParticipante = new JTextField();
+        tfIdReuniaoAddParticipante.setBounds(25, 141, 116, 29);
+        panel_1.add(tfIdReuniaoAddParticipante);
+        tfIdReuniaoAddParticipante.setColumns(10);
         
-        JButton button = new JButton("Enviar");
-        button.setBounds(37, 196, 89, 29);
-        panel_1.add(button);
+        btConfAddParticipante = new JButton("Enviar");
+        btConfAddParticipante.setAction(acAddParticipante);
+        btConfAddParticipante.setBounds(37, 196, 89, 29);
+        panel_1.add(btConfAddParticipante);
         
-        JButton button_1 = new JButton("Limpar");
-        button_1.setBounds(149, 196, 89, 29);
-        panel_1.add(button_1);
+        btLimparAddPartcipante = new JButton("Limpar");
+        btLimparAddPartcipante.setAction(acLimparAddParticipante);
+        btLimparAddPartcipante.setBounds(149, 196, 89, 29);
+        panel_1.add(btLimparAddPartcipante);
         
         JLabel label_2 = new JLabel("*caso n\u00E3o saiba o ID da reuni\u00E3o ");
         label_2.setBounds(50, 236, 188, 14);
@@ -979,10 +997,10 @@ public class UsuarioComum extends javax.swing.JFrame {
         lblNomeDoLocal.setBounds(26, 91, 93, 14);
         panel_2.add(lblNomeDoLocal);
         
-        textField_2 = new JTextField();
-        textField_2.setBounds(26, 112, 168, 24);
-        panel_2.add(textField_2);
-        textField_2.setColumns(10);
+        tfNomeLocalPesqReuniao = new JTextField();
+        tfNomeLocalPesqReuniao.setBounds(26, 112, 168, 24);
+        panel_2.add(tfNomeLocalPesqReuniao);
+        tfNomeLocalPesqReuniao.setColumns(10);
         
         JLabel lblNomeDaSala = new JLabel("Nome da Sala");
         lblNomeDaSala.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -994,9 +1012,9 @@ public class UsuarioComum extends javax.swing.JFrame {
         lblData.setBounds(26, 147, 51, 14);
         panel_2.add(lblData);
         
-        JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-        formattedTextField_1.setBounds(26, 167, 105, 24);
-        panel_2.add(formattedTextField_1);
+        ftfDataPesqReuniao = new JFormattedTextField();
+        ftfDataPesqReuniao.setBounds(26, 167, 105, 24);
+        panel_2.add(ftfDataPesqReuniao);
         
         JLabel lblPeriodo = new JLabel("Periodo");
         lblPeriodo.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -1008,50 +1026,360 @@ public class UsuarioComum extends javax.swing.JFrame {
         lblDadosDaPesquisa.setBounds(134, 56, 168, 16);
         panel_2.add(lblDadosDaPesquisa);
         
-        textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        textField_3.setBounds(236, 112, 168, 24);
-        panel_2.add(textField_3);
+        tfNomeSalaPesqReuniao = new JTextField();
+        tfNomeSalaPesqReuniao.setColumns(10);
+        tfNomeSalaPesqReuniao.setBounds(236, 112, 168, 24);
+        panel_2.add(tfNomeSalaPesqReuniao);
         
-        JButton btnPesquisar = new JButton("Pesquisar");
-        btnPesquisar.setBounds(89, 207, 89, 23);
-        panel_2.add(btnPesquisar);
+        JButton btnPesquisarReuniao = new JButton("Pesquisar");
+        btnPesquisarReuniao.setAction(acPesquisarReuniao);
+        btnPesquisarReuniao.setBounds(89, 207, 89, 23);
+        panel_2.add(btnPesquisarReuniao);
         
-        JButton btnLimpar_3 = new JButton("Limpar");
-        btnLimpar_3.setBounds(223, 207, 89, 23);
-        panel_2.add(btnLimpar_3);
+        btnLimpPesqReuniao = new JButton("Limpar");
+        btnLimpPesqReuniao.setAction(acLimparPesqReuniao);
+        btnLimpPesqReuniao.setBounds(223, 207, 89, 23);
+        panel_2.add(btnLimpPesqReuniao);
         
-        JRadioButton rdbtnNewRadioButton = new JRadioButton("Manh\u00E3");
-        rdbtnNewRadioButton.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-        rdbtnNewRadioButton.setBounds(208, 168, 64, 23);
-        panel_2.add(rdbtnNewRadioButton);
+        rbManhaPesqReuniao = new JRadioButton("Manh\u00E3");
+        btGrupoPesqReuniao.add(rbManhaPesqReuniao);
+        rbManhaPesqReuniao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+        rbManhaPesqReuniao.setBounds(208, 168, 64, 23);
+        panel_2.add(rbManhaPesqReuniao);
         
-        JRadioButton rdbtnTarde_1 = new JRadioButton("Tarde");
-        rdbtnTarde_1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-        rdbtnTarde_1.setBounds(274, 168, 64, 23);
-        panel_2.add(rdbtnTarde_1);
+        rbTardePesqReuinao = new JRadioButton("Tarde");
+        btGrupoPesqReuniao.add(rbTardePesqReuinao);
+        rbTardePesqReuinao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+        rbTardePesqReuinao.setBounds(274, 168, 64, 23);
+        panel_2.add(rbTardePesqReuinao);
         
-        JRadioButton rdbtnNoite_1 = new JRadioButton("Noite");
-        rdbtnNoite_1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-        rdbtnNoite_1.setBounds(340, 168, 64, 23);
-        panel_2.add(rdbtnNoite_1);
+        rbNoitePesqReuniao = new JRadioButton("Noite");
+        btGrupoPesqReuniao.add(rbNoitePesqReuniao);
+        rbNoitePesqReuniao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+        rbNoitePesqReuniao.setBounds(340, 168, 64, 23);
+        panel_2.add(rbNoitePesqReuniao);
         
         lblDadosDaReunio = new JLabel("Dados da Reuni\u00E3o");
         lblDadosDaReunio.setFont(new Font("Sitka Small", Font.BOLD, 12));
         lblDadosDaReunio.setBounds(509, 35, 168, 16);
         panel_2.add(lblDadosDaReunio);
         
-        JTextPane txtpnIdReniaoLocal = new JTextPane();
-        txtpnIdReniaoLocal.setEnabled(false);
-        txtpnIdReniaoLocal.setText("ID Reniao:\r\nLocal:\r\nSala:\r\nProprietario:\r\nData:\r\nPeriodo:");
-        txtpnIdReniaoLocal.setBounds(476, 72, 231, 167);
-        panel_2.add(txtpnIdReniaoLocal);
+        pntDadosPesqReuniao = new JTextPane();
+        pntDadosPesqReuniao.setEnabled(false);
+        pntDadosPesqReuniao.setText("ID Reniao:\r\nLocal:\r\nCidade:\r\nEstado:\r\nSala:\r\nPiso:\r\nData:\r\nPeriodo:\r\n");
+        pntDadosPesqReuniao.setBounds(463, 72, 231, 138);
+        panel_2.add(pntDadosPesqReuniao);
         
         pnAta = new JPanel();
         jTabbedPane1.addTab("Atas", null, pnAta, null);
+        pnAta.setLayout(null);
+        
+        JLabel lblRedigirAtaDe = new JLabel("Redigir Ata de Reuni\u00E3o");
+        lblRedigirAtaDe.setFont(new Font("Sitka Small", Font.BOLD, 13));
+        lblRedigirAtaDe.setBounds(115, 55, 210, 14);
+        pnAta.add(lblRedigirAtaDe);
+        
+        textField_9 = new JTextField();
+        textField_9.setBounds(160, 114, 60, 28);
+        pnAta.add(textField_9);
+        textField_9.setColumns(10);
+        
+        JLabel lblAssuntoDaAta = new JLabel("Assunto da Ata");
+        lblAssuntoDaAta.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblAssuntoDaAta.setBounds(23, 211, 110, 21);
+        pnAta.add(lblAssuntoDaAta);
+        
+        JLabel lblIdDaReuniao = new JLabel("ID da Reuniao");
+        lblIdDaReuniao.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblIdDaReuniao.setBounds(23, 117, 110, 21);
+        pnAta.add(lblIdDaReuniao);
+        
+        JScrollPane scrollPane_4 = new JScrollPane();
+        scrollPane_4.setBounds(23, 362, 270, 140);
+        pnAta.add(scrollPane_4);
+        
+        JTextPane textPane_3 = new JTextPane();
+        scrollPane_4.setViewportView(textPane_3);
+        
+        JLabel lblObjetosDaReunio = new JLabel("Objeto da Reuni\u00E3o");
+        scrollPane_4.setColumnHeaderView(lblObjetosDaReunio);
+        
+        JLabel lblTipoDeReunio = new JLabel("Tipo de Reuni\u00E3o");
+        lblTipoDeReunio.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblTipoDeReunio.setBounds(23, 163, 110, 21);
+        pnAta.add(lblTipoDeReunio);
+        
+        textField_11 = new JTextField();
+        textField_11.setColumns(10);
+        textField_11.setBounds(158, 160, 153, 28);
+        pnAta.add(textField_11);
+        
+        JButton btnEnviar_1 = new JButton("Enviar Ata");
+        btnEnviar_1.setBounds(23, 539, 115, 28);
+        pnAta.add(btnEnviar_1);
+        
+        JButton btnCancelar_1 = new JButton("Cancelar");
+        btnCancelar_1.setBounds(192, 539, 115, 28);
+        pnAta.add(btnCancelar_1);
+        
+        label_7 = new JLabel("*maximo de caracteres permitido 200 ");
+        label_7.setForeground(Color.DARK_GRAY);
+        label_7.setFont(new Font("SansSerif", Font.BOLD, 11));
+        label_7.setBounds(23, 513, 236, 15);
+        pnAta.add(label_7);
+        
+        btnVizualisarAta = new JButton("Vizualisar Ata");
+        btnVizualisarAta.setBounds(470, 160, 122, 28);
+        pnAta.add(btnVizualisarAta);
+        
+        textField_12 = new JTextField();
+        textField_12.setColumns(10);
+        textField_12.setBounds(608, 110, 74, 28);
+        pnAta.add(textField_12);
+        
+        label_8 = new JLabel("ID da Reuniao");
+        label_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        label_8.setBounds(470, 113, 110, 21);
+        pnAta.add(label_8);
+        
+        lblPesquisarAta = new JLabel("Pesquisar Ata\r\n");
+        lblPesquisarAta.setFont(new Font("Sitka Small", Font.BOLD, 13));
+        lblPesquisarAta.setBounds(539, 55, 171, 14);
+        pnAta.add(lblPesquisarAta);
+        
+        JEditorPane editorPane = new JEditorPane();
+        editorPane.setBounds(27, 243, 284, 61);
+        pnAta.add(editorPane);
+        
+        JSeparator separator_3 = new JSeparator();
+        separator_3.setOrientation(SwingConstants.VERTICAL);
+        separator_3.setBounds(426, 80, 11, 475);
+        pnAta.add(separator_3);
+        
+        JButton btnEditarAta = new JButton("Editar Ata");
+        btnEditarAta.setBounds(628, 160, 122, 28);
+        pnAta.add(btnEditarAta);
+        
+        JLabel lblObterRelatorio = new JLabel("Obter Relatorio");
+        lblObterRelatorio.setFont(new Font("Sitka Small", Font.BOLD, 13));
+        lblObterRelatorio.setBounds(521, 277, 171, 21);
+        pnAta.add(lblObterRelatorio);
+        
+        textField_10 = new JTextField();
+        textField_10.setColumns(10);
+        textField_10.setBounds(676, 324, 74, 28);
+        pnAta.add(textField_10);
+        
+        JLabel label_9 = new JLabel("ID da Reuniao");
+        label_9.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        label_9.setBounds(470, 327, 110, 21);
+        pnAta.add(label_9);
+        
+        JLabel lblmaximoDeCaracteres_2 = new JLabel("*maximo de caracteres permitido 100");
+        lblmaximoDeCaracteres_2.setForeground(Color.DARK_GRAY);
+        lblmaximoDeCaracteres_2.setFont(new Font("SansSerif", Font.BOLD, 11));
+        lblmaximoDeCaracteres_2.setBounds(23, 315, 236, 15);
+        pnAta.add(lblmaximoDeCaracteres_2);
+        
+        JButton btnObter = new JButton("Obter");
+        btnObter.setBounds(486, 474, 122, 28);
+        pnAta.add(btnObter);
+        
+        JLabel lblExpectativaDeParticipantes = new JLabel("Expectativa de participantes");
+        lblExpectativaDeParticipantes.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblExpectativaDeParticipantes.setBounds(470, 363, 160, 21);
+        pnAta.add(lblExpectativaDeParticipantes);
+        
+        textField_13 = new JTextField();
+        textField_13.setColumns(10);
+        textField_13.setBounds(676, 360, 74, 28);
+        pnAta.add(textField_13);
+        
+        JLabel lblMetasAtingidas = new JLabel("Metas atingidas");
+        lblMetasAtingidas.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblMetasAtingidas.setBounds(470, 405, 98, 21);
+        pnAta.add(lblMetasAtingidas);
+        
+        JRadioButton rdbtnSim_1 = new JRadioButton("Sim");
+        rdbtnSim_1.setBounds(628, 405, 54, 23);
+        pnAta.add(rdbtnSim_1);
+        
+        JRadioButton rdbtnNao = new JRadioButton("Nao");
+        rdbtnNao.setBounds(696, 405, 54, 23);
+        pnAta.add(rdbtnNao);
+        
+        JButton btnLimpar_3 = new JButton("Limpar");
+        btnLimpar_3.setBounds(644, 474, 122, 28);
+        pnAta.add(btnLimpar_3);
         
         pnPlanoDeAcao = new JPanel();
         jTabbedPane1.addTab("Plano de Ação", null, pnPlanoDeAcao, null);
+        pnPlanoDeAcao.setLayout(null);
+        
+        JSeparator separator_2 = new JSeparator();
+        separator_2.setBounds(23, 260, 747, 7);
+        pnPlanoDeAcao.add(separator_2);
+        
+        JLabel lblPlanoDeAo = new JLabel("Plano de A\u00E7\u00E3o");
+        lblPlanoDeAo.setFont(new Font("Sitka Small", Font.BOLD, 13));
+        lblPlanoDeAo.setBounds(352, 11, 140, 21);
+        pnPlanoDeAcao.add(lblPlanoDeAo);
+        
+        JLabel lblAes = new JLabel("A\u00E7\u00F5es");
+        lblAes.setFont(new Font("Sitka Small", Font.BOLD, 13));
+        lblAes.setBounds(357, 278, 65, 21);
+        pnPlanoDeAcao.add(lblAes);
+        
+        JLabel lblNewLabel_1 = new JLabel("ID Reuniao");
+        lblNewLabel_1.setBounds(23, 22, 75, 21);
+        pnPlanoDeAcao.add(lblNewLabel_1);
+        
+        textField = new JTextField();
+        textField.setBounds(163, 20, 131, 23);
+        pnPlanoDeAcao.add(textField);
+        textField.setColumns(10);
+        
+        JLabel lblDataInicial = new JLabel("Data Inicial");
+        lblDataInicial.setBounds(23, 92, 75, 21);
+        pnPlanoDeAcao.add(lblDataInicial);
+        
+        textField_1 = new JTextField();
+        textField_1.setBounds(163, 91, 131, 23);
+        pnPlanoDeAcao.add(textField_1);
+        textField_1.setColumns(10);
+        
+        JLabel lblDataFinal = new JLabel("Data Final");
+        lblDataFinal.setBounds(23, 126, 75, 21);
+        pnPlanoDeAcao.add(lblDataFinal);
+        
+        JLabel lbldigiteAData = new JLabel("*Digite a data no formato: yyyy-mm-dd ");
+        lbldigiteAData.setForeground(Color.DARK_GRAY);
+        lbldigiteAData.setFont(new Font("SansSerif", Font.BOLD, 11));
+        lbldigiteAData.setBounds(51, 170, 236, 15);
+        pnPlanoDeAcao.add(lbldigiteAData);
+        
+        JScrollPane scrollPane_1 = new JScrollPane();
+        scrollPane_1.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        scrollPane_1.setBounds(352, 41, 400, 160);
+        pnPlanoDeAcao.add(scrollPane_1);
+        
+        JTextPane textPane = new JTextPane();
+        scrollPane_1.setViewportView(textPane);
+        
+        lblNewLabel_2 = new JLabel("\t\t\t\t\t\t\t  Descri\u00E7\u00E3o do Plano de A\u00E7\u00E3o");
+        scrollPane_1.setColumnHeaderView(lblNewLabel_2);
+        
+        JButton btnEnviar = new JButton("Enviar");
+        btnEnviar.setBounds(60, 206, 89, 29);
+        pnPlanoDeAcao.add(btnEnviar);
+        
+        JButton btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBounds(198, 206, 89, 29);
+        pnPlanoDeAcao.add(btnCancelar);
+        
+        JButton btnLimpar_2 = new JButton("Limpar Painel");
+        btnLimpar_2.setBounds(625, 212, 127, 29);
+        pnPlanoDeAcao.add(btnLimpar_2);
+        
+        textField_2 = new JTextField();
+        textField_2.setColumns(10);
+        textField_2.setBounds(163, 125, 131, 23);
+        pnPlanoDeAcao.add(textField_2);
+        
+        JLabel label_4 = new JLabel("ID Reuniao");
+        label_4.setBounds(23, 291, 75, 21);
+        pnPlanoDeAcao.add(label_4);
+        
+        textField_3 = new JTextField();
+        textField_3.setColumns(10);
+        textField_3.setBounds(123, 290, 127, 23);
+        pnPlanoDeAcao.add(textField_3);
+        
+        JLabel lblDataDeEntrega = new JLabel("Data de inicial");
+        lblDataDeEntrega.setBounds(23, 425, 89, 21);
+        pnPlanoDeAcao.add(lblDataDeEntrega);
+        
+        textField_4 = new JTextField();
+        textField_4.setColumns(10);
+        textField_4.setBounds(123, 424, 127, 23);
+        pnPlanoDeAcao.add(textField_4);
+        
+        JLabel lblOrdem = new JLabel("C\u00F3digo");
+        lblOrdem.setBounds(23, 323, 75, 21);
+        pnPlanoDeAcao.add(lblOrdem);
+        
+        textField_5 = new JTextField();
+        textField_5.setColumns(10);
+        textField_5.setBounds(123, 324, 127, 23);
+        pnPlanoDeAcao.add(textField_5);
+        
+        JLabel lblPrazo = new JLabel("Prazo");
+        lblPrazo.setBounds(23, 393, 75, 21);
+        pnPlanoDeAcao.add(lblPrazo);
+        
+        textField_6 = new JTextField();
+        textField_6.setColumns(10);
+        textField_6.setBounds(123, 394, 127, 23);
+        pnPlanoDeAcao.add(textField_6);
+        
+        JLabel label_5 = new JLabel("*Digite a data no formato: yyyy-mm-dd ");
+        label_5.setForeground(Color.DARK_GRAY);
+        label_5.setFont(new Font("SansSerif", Font.BOLD, 11));
+        label_5.setBounds(23, 466, 271, 15);
+        pnPlanoDeAcao.add(label_5);
+        
+        JButton button = new JButton("Enviar");
+        button.setBounds(60, 505, 89, 29);
+        pnPlanoDeAcao.add(button);
+        
+        JButton button_1 = new JButton("Cancelar");
+        button_1.setBounds(198, 505, 89, 29);
+        pnPlanoDeAcao.add(button_1);
+        
+        JScrollPane scrollPane_2 = new JScrollPane();
+        scrollPane_2.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        scrollPane_2.setBounds(407, 309, 344, 123);
+        pnPlanoDeAcao.add(scrollPane_2);
+        
+        JTextPane textPane_1 = new JTextPane();
+        scrollPane_2.setViewportView(textPane_1);
+        
+        JLabel lblNewLabel_3 = new JLabel("Observa\u00E7\u00E3o sobre a a\u00E7\u00E3o");
+        scrollPane_2.setColumnHeaderView(lblNewLabel_3);
+        
+        JButton button_2 = new JButton("Limpar Painel");
+        button_2.setBounds(625, 466, 127, 29);
+        pnPlanoDeAcao.add(button_2);
+        
+        JLabel lblCpfDoResponsavel = new JLabel("Cpf do Responsavel");
+        lblCpfDoResponsavel.setBounds(23, 54, 126, 21);
+        pnPlanoDeAcao.add(lblCpfDoResponsavel);
+        
+        textField_7 = new JTextField();
+        textField_7.setColumns(10);
+        textField_7.setBounds(163, 57, 131, 23);
+        pnPlanoDeAcao.add(textField_7);
+        
+        JLabel lblCusto = new JLabel("Ordem");
+        lblCusto.setBounds(23, 361, 75, 21);
+        pnPlanoDeAcao.add(lblCusto);
+        
+        textField_8 = new JTextField();
+        textField_8.setColumns(10);
+        textField_8.setBounds(123, 358, 127, 23);
+        pnPlanoDeAcao.add(textField_8);
+        
+        JLabel lblmaximoDeCaracteres = new JLabel("*maximo de caracteres permitido 200 ");
+        lblmaximoDeCaracteres.setForeground(Color.DARK_GRAY);
+        lblmaximoDeCaracteres.setFont(new Font("SansSerif", Font.BOLD, 11));
+        lblmaximoDeCaracteres.setBounds(372, 212, 236, 15);
+        pnPlanoDeAcao.add(lblmaximoDeCaracteres);
+        
+        JLabel lblmaximoDeCaracteres_1 = new JLabel("*maximo de caracteres permitido 150");
+        lblmaximoDeCaracteres_1.setForeground(Color.DARK_GRAY);
+        lblmaximoDeCaracteres_1.setFont(new Font("SansSerif", Font.BOLD, 11));
+        lblmaximoDeCaracteres_1.setBounds(428, 443, 236, 15);
+        pnPlanoDeAcao.add(lblmaximoDeCaracteres_1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1140,10 +1468,19 @@ public class UsuarioComum extends javax.swing.JFrame {
     private JTextField tfIdSala;
     private JButton btLimparPesqSala;
     private JLabel lblDadosDoLocal;
-    private JTable tbReunioesConvidadas;
+    private JTable tbReunioesConfirmadas;
     private JLabel lblNewLabel;
     private JTextField tfNomeLocalCadReuniao;
-    
+    private JTextField tfConfParIdReuniao;
+    private JTextField tfIdReuniaoAddParticipante;
+    private JTextField tfNomeLocalPesqReuniao;
+    private JTextField tfNomeSalaPesqReuniao;
+    private JLabel lblDadosDaReunio;
+    private JButton btnMostrarReunisConvidadas;
+    private final ButtonGroup btGrupoConfParticipacao = new ButtonGroup();
+    private final ButtonGroup btGrupoPesqReuniao = new ButtonGroup();
+    private final ButtonGroup btGrupoCadReuniao = new ButtonGroup();
+
     // Definindo açoes
     private final Action acCadUsuario = new SwingAction();
     private final Action acPesqUsuario = new SwingAction_2();
@@ -1154,14 +1491,33 @@ public class UsuarioComum extends javax.swing.JFrame {
     private final Action acCadReuniao = new SwingAction_6();
     private final Action acLimparCadReuniao = new SwingAction_7();
     private final Action acMostrarRePublica = new SwingAction_8();
-    private JButton btnMostrarReunisConvidadas;
-    private final ButtonGroup buttonGroup = new ButtonGroup();
     private final Action acLimpTbRePublica = new SwingAction_9();
+    private final Action acConfirmarParticipacao = new SwingAction_10();
+    private final Action acPesquisarReuniao = new SwingAction_11();
+    private final Action acLimparPesqReuniao = new SwingAction_12();
+    private final Action acMostrarReunioesConf = new SwingAction_13();
+    private final Action acLimparTbReunioesConf = new SwingAction_14();
     private JTextField textField;
     private JTextField textField_1;
+    private JLabel lblNewLabel_2;
     private JTextField textField_2;
     private JTextField textField_3;
-    private JLabel lblDadosDaReunio;
+    private JTextField textField_4;
+    private JTextField textField_5;
+    private JTextField textField_6;
+    private final Action acAddParticipante = new SwingAction_15();
+    private final Action acLimparAddParticipante = new SwingAction_16();
+    private JTextField textField_7;
+    private JTextField textField_8;
+    private JTextField textField_9;
+    private JTextField textField_11;
+    private JLabel label_7;
+    private JButton btnVizualisarAta;
+    private JTextField textField_12;
+    private JLabel label_8;
+    private JLabel lblPesquisarAta;
+    private JTextField textField_10;
+    private JTextField textField_13;
    
 
 		
@@ -1185,10 +1541,9 @@ public class UsuarioComum extends javax.swing.JFrame {
 			System.out.println("Tipo de usuario: "+tipoUsuario);
 			if(senha.equals(confirmarSenha)) {
 				usuario.cadastrarUsuario(conect, ps, rt, nome, cpf, confirmarSenha, email, tipoUsuario);
-				lbConfirmacaoCadastro.setText("As senhas são iguais");
 				JOptionPane.showMessageDialog(rootPane, "Usuario cadastrado");
 			}else {
-				lbConfirmacaoCadastro.setText("Senhas diferentes, digite as novamente!");
+				JOptionPane.showMessageDialog(rootPane, "Senhas são diferentes!");
 			}
 			System.out.println("Dados:");
 			System.out.println("Nome: "+nome+", Cpf: "+cpf+", Email"+email+"\nSehna: "+senha+", Confirmar Senha"+confirmarSenha);
@@ -1210,7 +1565,7 @@ public class UsuarioComum extends javax.swing.JFrame {
 			if(user == null) {
 				System.out.println("Usuario não existe");
 			}else{
-				System.out.println(user.toString());// aqui nao esta o toString!!
+				System.out.println(user.toString());
 				tpnDadosUsuario.setText("ID: "+user.getIdUser()+"\nNome: "+user.getNome()+
 						"\nCpf: "+user.getCpf()+"\nTipo: "+user.getTipo()+"\nE-mail: "+user.getEmail());
 			}
@@ -1224,11 +1579,9 @@ public class UsuarioComum extends javax.swing.JFrame {
 			putValue(SHORT_DESCRIPTION, "Limpar campo de pesquisa");
 		}
 		public void actionPerformed(ActionEvent e) { // ESTOU ACHANDO QUE O PROBLEMA É DO ESCOPO DE ACTION!
-			// Quando clico em limpar, não consigo mais pesquisar um novo usuario!!
-			//user = null;
-			tfPesquisarCpf.setText(""); // O Problema esta aqui!!!! como resolver isso?? 
+			tfPesquisarCpf.setText(""); 
 			//btPesquisarUsuario.setEnabled(true);
-			System.out.println("Cliquei no botão Limpar!");
+			
 		}
 	}
 	private class SwingAction_3 extends AbstractAction {
@@ -1319,6 +1672,10 @@ public class UsuarioComum extends javax.swing.JFrame {
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
+			// Essa deve ser a acao de limpar cadastro de reuniao
+			tfIdSala.setText("");
+			tfNomeLocalCadReuniao.setText("");
+			ftfDataReuniao.setText("");
 		}
 	}
 	
@@ -1330,8 +1687,7 @@ public class UsuarioComum extends javax.swing.JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			// 
-			try { 
+			try { // Corrigido!
 				st = conect.createStatement();
 				rt = st.executeQuery("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, NOME_LOCAL, NOME, PISO, CONFIRMAR_SALA "
 									+"FROM SALA "
@@ -1340,11 +1696,10 @@ public class UsuarioComum extends javax.swing.JFrame {
 									+"INNER JOIN REUNIAO "
 									+"ON IDSALA = ID_SALA "
 									+"INNER JOIN USUARIO "
-									+"ON IDUSUARIO = ID_USUARIO "
+									+"ON IDUSUARIO = PROPRIETARIO "
 									+"WHERE ACESSO = 'PUBLICO' ");
 			
-				while(rt.next()) {// AO INVES DE DÁ O PRINT VOU ADD NAS LINHAS DE CADA COLUNA!!
-					//String local, sala, nome, periodo, confirmacao, piso , data;
+				while(rt.next()) {
 					linha[0] = rt.getString("NOME");
 					linha[1] = rt.getString("NOME_LOCAL");
 					linha[2] = rt.getString("NOME_SALA");
@@ -1356,21 +1711,165 @@ public class UsuarioComum extends javax.swing.JFrame {
 					quantidadeLinhas += 1;
 			}
 			
-		} catch (SQLException e2) {
+		} catch (SQLException eVisualizarRePublica) {
 			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			eVisualizarRePublica.printStackTrace();
 		}
 	}
 }
 	private class SwingAction_9 extends AbstractAction {
-		
 		public SwingAction_9() {
 			putValue(NAME, "Limpar");
 			putValue(SHORT_DESCRIPTION, "Limpar Tabela de Reunioes Publicas");
 		}
 		public void actionPerformed(ActionEvent e) {
 			System.out.println(quantidadeLinhas);
+			modeloPublico.setRowCount(0);
+		}
+	}
+	
+	// Açoes da Aba de Confirmar Participação/ Add Participante
+	private class SwingAction_10 extends AbstractAction {
+		public SwingAction_10() {
+			putValue(NAME, "Enviar");
+			putValue(SHORT_DESCRIPTION, "Confirmar Participação");
+		}
+		public void actionPerformed(ActionEvent e) {
+			int idReuniao = Integer.parseInt(tfConfParIdReuniao.getText());
+			String confirmacao = null; 
+			if(rdbtnNo.isSelected()) {
+				confirmacao = "NAO";
+			}else if(rdbtnSim.isSelected()) {
+				confirmacao = "SIM";
+			}
+			usuario.confirmarParticipante(conect, rt, idReuniao,usuario.getIdUser() ,confirmacao);
+		}
+	}
+	private class SwingAction_11 extends AbstractAction {
+		public SwingAction_11() {
+			putValue(NAME, "Pesquisar");
+			putValue(SHORT_DESCRIPTION, "Pesquisar Reunião");
+		}
+		// FUNCIONANDO!!!
+		public void actionPerformed(ActionEvent e) {
+			String local, sala, data;
+			String periodo = null;
+			Object[] dadosPesquisa = new Object[8];
+			//dadosPesquisa = null;
+			local = tfNomeLocalPesqReuniao.getText();
+			sala = tfNomeSalaPesqReuniao.getText();
+			data = ftfDataPesqReuniao.getText();
+			System.out.println(periodo);
 			
+			if(rbManhaPesqReuniao.isSelected()) {
+				periodo = "MANHA";
+			}else if(rbTardePesqReuinao.isSelected()) {
+				periodo = "TARDE";
+			}else if(rbNoitePesqReuniao.isSelected()) {
+				periodo = "NOITE";
+			}
+			System.out.println(periodo);
+			dadosPesquisa = usuario.pesquisarReuniao(local, sala, data, periodo, conect, rt);
+			if(dadosPesquisa[0] == null) {
+				System.out.println("Essa reuniao nao existe!");
+				JOptionPane.showMessageDialog(rootPane, "Reunião não encontrada!");
+			}else if(dadosPesquisa[0] != null) {
+				pntDadosPesqReuniao.setText("ID Reuniao: "+dadosPesquisa[0]+"\nLocal: "+dadosPesquisa[5]+"\nCidade: "+dadosPesquisa[6]
+										+"\nEstado: "+dadosPesquisa[7]+"\nSala: "+dadosPesquisa[3]+"\nPiso: "+dadosPesquisa[4]
+										+"\nData: "+dadosPesquisa[2]+"\nPeriodo: "+dadosPesquisa[1]);
+			}
+			
+		}
+	}
+	private class SwingAction_12 extends AbstractAction {
+		public SwingAction_12() {
+			putValue(NAME, "Limpar");
+			putValue(SHORT_DESCRIPTION, "Limpar pesquisar de Reunião");
+		}
+		public void actionPerformed(ActionEvent e) {
+			tfNomeLocalPesqReuniao.setText("");
+			tfNomeSalaPesqReuniao.setText("");
+			ftfDataPesqReuniao.setText("");
+			pntDadosPesqReuniao.setText("ID Reuniao: "+"\nLocal: "+"\nCidade: "
+										+"\nEstado: "+"\nSala: "+"\nPiso: "
+										+"\nData: "+"\nPeriodo: ");
+		}
+	}
+	
+	
+	private class SwingAction_13 extends AbstractAction {
+		public SwingAction_13() {
+			putValue(NAME, "Mostrar");
+			putValue(SHORT_DESCRIPTION, "Visualizar Reunioes Confirmadas");
+		}
+		public void actionPerformed(ActionEvent e) {
+			try { 
+				//  REVER ISSO DE NOVO -->> REVISTO, MAS NÃO TESTEI TUDO!
+				// erro na query!! COLUMAS COM MESMO NOME(ID_USUARIO) --> MUDANÇAS FEITAS EM TODO O PROJETO (PROPRIETARIO)!!
+				ps = conect.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, PARTICIPACAO "  
+						+"FROM SALA "
+						+"INNER JOIN LOCAL "
+						+"ON IDLOCAL = ID_LOCAL "
+						+"INNER JOIN REUNIAO "
+						+"ON IDSALA = ID_SALA "
+						+"INNER JOIN USUARIO__REUNIAO "
+						+"ON ID_REUNIAO = IDREUNIAO "
+						+"WHERE PARTICIPACAO = ? AND ID_USUARIO = ? ");
+				ps.setString(1, "SIM");
+				ps.setInt(2, usuario.getIdUser());
+				rt = ps.executeQuery();
+				while(rt.next()) { // verificar a ordem!!
+					//String local, sala, nome, periodo, confirmacao, piso , data;
+					linhasTbReunioesConf[0] = rt.getString("NOME_SALA");
+					linhasTbReunioesConf[1] = rt.getString("NOME_LOCAL");
+					linhasTbReunioesConf[2] = rt.getString("CIDADE");
+					linhasTbReunioesConf[3] = rt.getString("NOME_LOCAL");
+					linhasTbReunioesConf[4] = rt.getString("PISO");
+					linhasTbReunioesConf[5] = rt.getString("DATA_REUNIAO");
+					linhasTbReunioesConf[6] = rt.getString("PARTICIPACAO");
+					modeloTbConfReunioes.addRow(linhasTbReunioesConf);
+			}
+			
+		} catch (SQLException eVisualizarReConf) {
+			eVisualizarReConf.printStackTrace();
+		}
+	  }
+	}
+	
+	private class SwingAction_14 extends AbstractAction {
+		public SwingAction_14() {
+			putValue(NAME, "Limpar");
+			putValue(SHORT_DESCRIPTION, "Limpar Reuniões Confirmadas");
+		}
+		public void actionPerformed(ActionEvent e) {
+			// Apagando as linhas
+			modeloTbConfReunioes.setRowCount(0);
+		}
+	}
+	private class SwingAction_15 extends AbstractAction {
+		public SwingAction_15() {
+			putValue(NAME, "Adicionar");
+			putValue(SHORT_DESCRIPTION, "Adicionar Participante");
+		}
+		public void actionPerformed(ActionEvent e) {
+			// IMPLEMENTAR!!
+			boolean verificacao;
+			String cpf = ftfCpfParticipante.getText();
+			int idReuniao = Integer.parseInt(tfIdReuniaoAddParticipante.getText());
+			verificacao = usuario.AddParticipante(cpf, idReuniao, conect, rt);
+			if(verificacao) {
+				JOptionPane.showMessageDialog(rootPane, "Participante convidado!");
+			}else {
+				JOptionPane.showMessageDialog(rootPane, "Participante Não foi convidado,\nVerifique o Participante ou a Reunião.");
+			}
+		}
+	}
+	private class SwingAction_16 extends AbstractAction {
+		public SwingAction_16() {
+			putValue(NAME, "Limpar");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
 		}
 	}
 }

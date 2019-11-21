@@ -11,6 +11,7 @@ import controle.MetodosEstaticos;
 import dao.Db;
 import modelo.Gestor;
 import modelo.Usuario;
+import javax.swing.JPanel;
 
 public class UsuarioGestor extends javax.swing.JFrame {
 
@@ -267,13 +268,13 @@ public class UsuarioGestor extends javax.swing.JFrame {
         jLabel9.setText("Cidade");
 
         jLabel10.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel10.setText("Piso");
+        jLabel10.setText("Rua");
 
         jLabel11.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel11.setText("Estado");
 
         jLabel12.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
-        jLabel12.setText("Nome da sala");
+        jLabel12.setText("Bairro");
 
         jLabel13.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel13.setText("Número");
@@ -381,7 +382,7 @@ public class UsuarioGestor extends javax.swing.JFrame {
                 .addGap(34, 34, 34))
         );
 
-        jTabbedPane3.addTab("Cadastrar", jPanel4);
+        jTabbedPane3.addTab("Cadastrar Local", jPanel4);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -393,6 +394,9 @@ public class UsuarioGestor extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane3)
         );
+        
+        JPanel pnCadSala = new JPanel();
+        jTabbedPane3.addTab("Cadastrar Sala", null, pnCadSala, null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -490,5 +494,4 @@ public class UsuarioGestor extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
-    // End of variables declaration//GEN-END:variables
 }

@@ -111,85 +111,6 @@ public class MetodosEstaticos {
 			}
 		return sala;
 	}
-
-	// FUNCIONANDO
-	public static void confirmarParticipacao(Usuario usuario, Connection con, ResultSet rt, PreparedStatement pst) {
-		
-		Scanner inp = new Scanner(System.in);
-		String horario, data, confirmacao = null;
-		data = null;
-		horario = null;
-		int id = 0;
-		boolean controle = true;
-		try {
-			int idReuniao = Validacao.verificarReuniao(id, horario, data, con, rt);
-			if(idReuniao == 0) {
-				System.out.println("Nao existe essa reuniao!");
-			}else if(idReuniao > 0) {
-				// se entrar aqui é pq a reuniao existe!
-				pst = con.prepareStatement("SELECT PARTICIPACAO FROM PESSAO_REUNIAO "
-									     + " WHERE ID_PESSOA = ? AND ID_REUNIAO = ?");
-				pst.setInt(1, usuario.getIdUser());
-				pst.setInt(2, idReuniao);
-				rt = pst.executeQuery();
-				if (rt.next()) { // TA RODANDO SHOW!! TERMINAR DE IMPLEMENTAR!!!
-					//System.out.println("Se entrar aqui, é por que o usuario foi convidado para a reuniao!");	
-					String estatus = rt.getString("PARTICIPACAO");
-					System.out.println("O estatus de confirmação é "+estatus);
-					if(estatus != null) {
-						if(estatus.equalsIgnoreCase("sim")) {
-							System.out.println("Sua presença já foi CONFIRMADA para essa reuniao");
-						}else if(estatus.equalsIgnoreCase("nao")) {
-							System.out.println("Sua presença já foi NEGADA para essa reuniao");
-						}
-					}else{//else if(estatus == null) 
-						// Se entrar aqui pq o campo PARTICIPACAO = NULL 
-						System.out.println("Digite 's' ou 'n' para confirmar ou negar sua participação s/n");
-						confirmacao = inp.next();
-						pst = con.prepareStatement("SELECT PARTICIPACAO FROM PESSAO_REUNIAO "
-							     + " WHERE ID_PESSOA = ? AND ID_REUNIAO = ?");
-						while(controle) 
-							if(confirmacao.equalsIgnoreCase("s")) {
-								pst = con.prepareStatement("UPDATE PESSAO_REUNIAO " 
-															+"SET PARTICIPACAO = 'SIM' "
-															+"WHERE ID_REUNIAO = ? AND ID_PESSOA = ?");
-								pst.setInt(1, idReuniao);
-								pst.setInt(2, usuario.getIdUser());
-								int ver = pst.executeUpdate();
-								System.out.println("Verificando linhas afetadas: "+ver);
-								con.commit();
-								System.out.println("Participação confirmada");
-								controle =false;
-							}else if(confirmacao.equalsIgnoreCase("n")) {
-								pst = con.prepareStatement("UPDATE PESSAO_REUNIAO " 
-															+"SET PARTICIPACAO = 'NAO' "
-															+"WHERE ID_REUNIAO = ? AND ID_PESSOA = ?");
-								pst.setInt(1, idReuniao);
-								pst.setInt(2, usuario.getIdUser());
-								int ver = pst.executeUpdate();
-								System.out.println("Verificando linhas afetadas: "+ver);
-								con.commit();
-								System.out.println("Participação negada");
-								controle =false;
-							}else {
-								System.out.println("Digite o valor esperado: s/n");
-								controle = true;
-							  }
-							}
-					}else {
-						System.out.println("Usuario NÃO convidado para a reunião");
-					}
-				}else {// FALTA TESTAR ESSA PARTE DO METODO!!!!
-					//System.out.println("Se entrar aqui, pq na minha logica nao o usuario nao foi convidado para a reuniao!");
-					System.out.println("Se entrar aqui, é pq o idReuniao é negativo. Nao tem como ser entra aqui!");
-				}
-				
-		}catch (SQLException e) {
-				e.printStackTrace();
-		   }
-		}
-	
-	
 	// FUNCIONANDO!!!
 	public static void cadastrarUsuario(Connection coneccao, PreparedStatement pst, ResultSet resultadoCadastro) {
 		Scanner scCadastro = new Scanner(System.in);
@@ -255,7 +176,7 @@ public class MetodosEstaticos {
 	  	}
 	}
 	
-	// TRABALHAR NESSE METODOS AGORA, SEM PERCA DE TEMPO!!
+	// ACHO QUE ESSE METODO NAO É USADO!!
 	public static String[] getRow(Connection coneccao, Statement st, ResultSet rts) {
 		System.out.println("Imprimindo as reuniões publicas");
 		String linha[] = new String[7];
@@ -269,7 +190,7 @@ public class MetodosEstaticos {
 								+"INNER JOIN REUNIAO "
 								+"ON IDSALA = ID_SALA "
 								+"INNER JOIN USUARIO "
-								+"ON IDUSUARIO = ID_USUARIO "
+								+"ON IDUSUARIO = PROPRIETARIO "
 								+"WHERE ACESSO = 'PUBLICO' ");
 			int num = 1;
 			
