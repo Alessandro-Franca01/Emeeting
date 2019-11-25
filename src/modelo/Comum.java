@@ -134,41 +134,44 @@ public class Comum extends Usuario{
 				}
 		return dados;
 	}
-	// Funcionando!!!
-	public void confirmarParticipante(Connection coneccao, ResultSet rt, int idReuniao, int idUsuario, String confirmacao ) {
-		// Tem que fazer a verificaçao ainda!!
+	// Ajustar, verificação - Quando tentar confirmar uma reuniao que vc nao é convidado - TESTAR!! 
+	public String confirmarParticipante(Connection coneccao, ResultSet rt, int idReuniao, int idUsuario, String confirmacao ) {
+		String participacao = null;
 		try {
-			String participacao = null;
+			
 			PreparedStatement pstPesquisa = coneccao.prepareStatement("SELECT PARTICIPACAO FROM USUARIO__REUNIAO "
 															+"WHERE ID_USUARIO = ? AND ID_REUNIAO = ? ");
 			pstPesquisa.setInt(1, idUsuario);
 			pstPesquisa.setInt(2, idReuniao);
 			rt = pstPesquisa.executeQuery();
+			// to entendendo isso aqui nao!!!
 			if(rt.next()) {
 				participacao = rt.getString("PARTICIPACAO");
-			}
-			if(participacao.equalsIgnoreCase("aguardando")) {
-				PreparedStatement pst = coneccao.prepareStatement("UPDATE USUARIO__REUNIAO "
-																	+"SET PARTICIPACAO = ? "
-																	+"WHERE ID_REUNIAO = ? AND ID_USUARIO = ?");
-					pst.setString(1, confirmacao);
-					pst.setInt(2, idReuniao);
-					pst.setInt(3, idUsuario);
-					int resultado = pst.executeUpdate();
-					System.out.println("Verificando update: "+resultado);
-					coneccao.commit();
-					
-			}else if(participacao.equalsIgnoreCase("nao")) {
-				System.out.println("Participação Negada!");
 				
-			}else if(participacao.equalsIgnoreCase("sim")) { 
-				System.out.println("Voce já confirmou essa reuniao!");
+				if(participacao.equalsIgnoreCase("aguardando")) {
+					PreparedStatement pst = coneccao.prepareStatement("UPDATE USUARIO__REUNIAO "
+																		+"SET PARTICIPACAO = ? "
+																		+"WHERE ID_REUNIAO = ? AND ID_USUARIO = ?");
+						pst.setString(1, confirmacao);
+						pst.setInt(2, idReuniao);
+						pst.setInt(3, idUsuario);
+						int resultado = pst.executeUpdate();
+						System.out.println("Verificando update: "+resultado);
+						coneccao.commit();
+						
+				}else if(participacao.equalsIgnoreCase("nao")) {
+					System.out.println("Participação Negada!");
+					
+				}else if(participacao.equalsIgnoreCase("sim")) { 
+					System.out.println("Voce já confirmou essa reuniao!");
+				}
 			}else {
 				System.out.println("Usuario nao esta convidado ou reuniao não existe!");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return participacao;
 	}
 	// FAZER TESTES!!
 	public boolean AddParticipante(String cpf, int idReuniao, Connection con, ResultSet pesquisa) {
@@ -182,6 +185,7 @@ public class Comum extends Usuario{
 						pst.setInt(2, idUser);
 						pst.setString(3, "AGUARDANDO");
 						int ver = pst.executeUpdate();
+						con.commit();
 						retorno = true;
 						System.out.println("Linhas afetas: "+ver);
 					}catch(SQLException e) {

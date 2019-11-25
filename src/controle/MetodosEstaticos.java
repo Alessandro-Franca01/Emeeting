@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import javax.swing.table.DefaultTableModel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -111,41 +112,7 @@ public class MetodosEstaticos {
 			}
 		return sala;
 	}
-	// FUNCIONANDO!!!
-	public static void cadastrarUsuario(Connection coneccao, PreparedStatement pst, ResultSet resultadoCadastro) {
-		Scanner scCadastro = new Scanner(System.in);
-		System.out.println("Digite seu CPF: ");
-		String cpf = scCadastro.next();
-		String tipoUsuario = "USUARIO";
-		int id = Validacao.verificarUsuario(cpf, coneccao, resultadoCadastro);
-		try {
-		if(id == 0) {
-			//scCadastro.reset();
-			Scanner sc01 = new Scanner(System.in);
-			System.out.println("Digite seu nome: ");
-			String nome = sc01.nextLine();//RESOVIDO!!
-			System.out.println("Digite sua senha: ");
-			String senha = scCadastro.next();
-			
-				pst = coneccao.prepareStatement("INSERT INTO PESSOA VALUES(?, ?, ?, ?, ?)");
-				pst.setString(1, null);
-				pst.setString(2, nome);
-				pst.setString(3, "USUARIO");
-				pst.setString(4, cpf);
-				pst.setString(5, senha);
-				int ver = pst.executeUpdate();
-				//System.out.println("Verificando linhas afetadas: "+ver);
-				coneccao.commit();
-				System.out.println("Usuário cadastrado com sucesso!");
-				
-			}else {
-				System.out.println("Usuario já cadastrado!");
-			} 
-		}catch (SQLException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			}
-	}
+
 	// FUNCIONANDO!!
 	public static void addParticipante(Connection coneccao, PreparedStatement pst, ResultSet rts) {
 		String horario, data, cpf = null;
@@ -215,6 +182,39 @@ public class MetodosEstaticos {
 			e.printStackTrace();
 		}
 		return linha;
+	}
+	
+	//Criar um metodo para Visualizar a tabela sem precisar de um botao!
+	public static void ViewTableConf(Connection coneccao, Coordenador coordenador, PreparedStatement ps, ResultSet rt, 
+							DefaultTableModel modeloReunioesConf, Object[] linhasTbReunioesConf) {
+		try { 
+			ps = coneccao.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, PARTICIPACAO, IDREUNIAO "  
+					+"FROM SALA "
+					+"INNER JOIN LOCAL "
+					+"ON IDLOCAL = ID_LOCAL "
+					+"INNER JOIN REUNIAO "
+					+"ON IDSALA = ID_SALA "
+					+"INNER JOIN USUARIO__REUNIAO "
+					+"ON ID_REUNIAO = IDREUNIAO "
+					+"WHERE PARTICIPACAO = ? AND ID_USUARIO = ? ");
+			System.out.println("Id coordenador: "+coordenador.getIdUser()); // dando um nullPoint, Aqui!!!
+			ps.setString(1, "SIM");
+			ps.setInt(2, coordenador.getIdUser());
+			rt = ps.executeQuery();
+			while(rt.next()) { // verificar a ordem!!
+				//String local, sala, nome, periodo, confirmacao, piso , data;
+				linhasTbReunioesConf[0] = rt.getString("IDREUNIAO");
+				linhasTbReunioesConf[1] = rt.getString("DATA_REUNIAO");
+				linhasTbReunioesConf[2] = rt.getString("PERIODO");
+				linhasTbReunioesConf[3] = rt.getString("NOME_LOCAL");
+				linhasTbReunioesConf[4] = rt.getString("CIDADE");
+				linhasTbReunioesConf[5] = rt.getString("NOME_SALA");
+				linhasTbReunioesConf[6] = rt.getString("PISO");
+				modeloReunioesConf.addRow(linhasTbReunioesConf);
+		}
 		
+	} catch (SQLException eVisualizarReConf) {
+		eVisualizarReConf.printStackTrace();
+	}
 	}
 }

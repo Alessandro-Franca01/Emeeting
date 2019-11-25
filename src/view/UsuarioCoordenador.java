@@ -1,7 +1,10 @@
 package view;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import modelo.Comum;
 import modelo.Coordenador;
@@ -10,26 +13,36 @@ import modelo.Usuario;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
+
+import controle.MetodosEstaticos;
+
 import javax.swing.JRadioButton;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
 
 /**
  *
  * @author Carlos Jr
  */
 public class UsuarioCoordenador extends javax.swing.JFrame {
+	
+	private DefaultTableModel modeloReunioesConf;
 
-    /**
-     * Creates new form UsuarioCoordenador
-     */
 	// Instacias uteis
+	boolean setViewTableConf = true; // usar para iniciar a tabela de reunioes confirmadas!
 	Usuario usuario = null;
 	Connection conect = null;
 	ResultSet rt = null;
 	Coordenador coordenador = null;
+	Statement st = null;
+ 	PreparedStatement ps = null;
+ 	Object[] linhasTbReunioesConf =  new Object[7];;
 	
 	public void receberUsuario(Coordenador userCoordenador) {
 			System.out.println("Recebendo o objeto usuario!");
-			usuario = userCoordenador;	
+			coordenador = userCoordenador;	
 		}
 	
 	public void receberConeccao(Connection con) {
@@ -58,6 +71,7 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jButton3.setAction(acMostrarReConfirmadas);
         jLabel5 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -65,7 +79,7 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbReunioesConf = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         pnReunioes = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -221,8 +235,13 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
         jLabel6.setText("Reuniões em que você confirmou presença");
 
-        jTable2.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbReunioesConf.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
+        Object[] colunaTbReunioesConf = {"ID", "Data", "Periodo", "Local", "Cidade", "Sala", "Piso"};
+        modeloReunioesConf = new DefaultTableModel(0,1);
+        modeloReunioesConf.setColumnIdentifiers(colunaTbReunioesConf);        	
+        tbReunioesConf.setModel(modeloReunioesConf);
+        
+        /*tbReunioesConf.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -240,7 +259,8 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
             new String [] {
                 "ID", "Data", "Período", "Ata", "Nome do local", "Sala", "Cidade", "Estado"
             }
-        ) {
+        ) */
+        /*{
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
@@ -255,26 +275,59 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
-        });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setMinWidth(28);
-            jTable2.getColumnModel().getColumn(0).setPreferredWidth(28);
-            jTable2.getColumnModel().getColumn(0).setMaxWidth(35);
-            jTable2.getColumnModel().getColumn(1).setMinWidth(50);
-            jTable2.getColumnModel().getColumn(1).setPreferredWidth(50);
-            jTable2.getColumnModel().getColumn(1).setMaxWidth(50);
-            jTable2.getColumnModel().getColumn(2).setMinWidth(55);
-            jTable2.getColumnModel().getColumn(2).setPreferredWidth(55);
-            jTable2.getColumnModel().getColumn(2).setMaxWidth(55);
-            jTable2.getColumnModel().getColumn(6).setResizable(false);
-            jTable2.getColumnModel().getColumn(6).setHeaderValue("Cidade");
-            jTable2.getColumnModel().getColumn(7).setResizable(false);
-            jTable2.getColumnModel().getColumn(7).setPreferredWidth(70);
-            jTable2.getColumnModel().getColumn(7).setHeaderValue("Estado");
-        }
-
+        });*/
+        //tbReunioesConf.getTableHeader().setReorderingAllowed(false);
+        
+        jScrollPane2.setViewportView(tbReunioesConf);
+        /*if (tbReunioesConf.getColumnModel().getColumnCount() > 0) {
+            tbReunioesConf.getColumnModel().getColumn(0).setMinWidth(28);
+            tbReunioesConf.getColumnModel().getColumn(0).setPreferredWidth(28);
+            tbReunioesConf.getColumnModel().getColumn(0).setMaxWidth(35);
+            tbReunioesConf.getColumnModel().getColumn(1).setMinWidth(50);
+            tbReunioesConf.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tbReunioesConf.getColumnModel().getColumn(1).setMaxWidth(50);
+            tbReunioesConf.getColumnModel().getColumn(2).setMinWidth(55);
+            tbReunioesConf.getColumnModel().getColumn(2).setPreferredWidth(55);
+            tbReunioesConf.getColumnModel().getColumn(2).setMaxWidth(55);
+            tbReunioesConf.getColumnModel().getColumn(6).setResizable(false);
+            tbReunioesConf.getColumnModel().getColumn(6).setHeaderValue("Cidade");
+            tbReunioesConf.getColumnModel().getColumn(7).setResizable(false);
+            tbReunioesConf.getColumnModel().getColumn(7).setPreferredWidth(70);
+            tbReunioesConf.getColumnModel().getColumn(7).setHeaderValue("Estado");
+        }*/
+        // Por que nao esta FUNCIONANDO ??? TENTAR COLOCAR DENTRO DE UM ACAO!
+        //if(setViewTableConf) {
+        	// entrar com o codigo de visualização da tabela
+        	/*try { 
+    			ps = conect.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, PARTICIPACAO, IDREUNIAO "  
+    					+"FROM SALA "
+    					+"INNER JOIN LOCAL "
+    					+"ON IDLOCAL = ID_LOCAL "
+    					+"INNER JOIN REUNIAO "
+    					+"ON IDSALA = ID_SALA "
+    					+"INNER JOIN USUARIO__REUNIAO "
+    					+"ON ID_REUNIAO = IDREUNIAO "
+    					+"WHERE PARTICIPACAO = ? AND ID_USUARIO = ? ");
+    			ps.setString(1, "SIM");
+    			ps.setInt(2, usuario.getIdUser());
+    			rt = ps.executeQuery();
+    			while(rt.next()) { // verificar a ordem!!
+    				//String local, sala, nome, periodo, confirmacao, piso , data;
+    				linhasTbReunioesConf[0] = rt.getString("IDREUNIAO");
+    				linhasTbReunioesConf[1] = rt.getString("DATA_REUNIAO");
+    				linhasTbReunioesConf[2] = rt.getString("PERIODO");
+    				linhasTbReunioesConf[3] = rt.getString("NOME_LOCAL");
+    				linhasTbReunioesConf[4] = rt.getString("CIDADE");
+    				linhasTbReunioesConf[5] = rt.getString("NOME_SALA");
+    				linhasTbReunioesConf[6] = rt.getString("PISO");
+    				modeloReunioesConf.addRow(linhasTbReunioesConf);
+    		}
+    		
+    	} catch (SQLException eVisualizarReConf) {
+    		eVisualizarReConf.printStackTrace();
+    	 }
+       }*/
+        
         javax.swing.GroupLayout gl_pnAgReunioes = new javax.swing.GroupLayout(pnAgReunioes);
         pnAgReunioes.setLayout(gl_pnAgReunioes);
         gl_pnAgReunioes.setHorizontalGroup(
@@ -1044,16 +1097,15 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
+   
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+    	
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -1076,10 +1128,11 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new UsuarioCoordenador().setVisible(true);
+                
             }
         });
     }
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -1145,7 +1198,7 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbReunioesConf;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
@@ -1163,4 +1216,44 @@ public class UsuarioCoordenador extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JTextPane jTextPane1;
+    
+    private final Action acMostrarReConfirmadas = new SwingAction();
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+			//MetodosEstaticos.ViewTableConf(conect, coordenador, ps, rt, modeloReunioesConf, linhasTbReunioesConf);
+			//coordenador.ViewTableConf(conect, ps, rt, modeloReunioesConf, linhasTbReunioesConf);
+			try { 
+    			ps = conect.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, PARTICIPACAO, IDREUNIAO "  
+    					+"FROM SALA "
+    					+"INNER JOIN LOCAL "
+    					+"ON IDLOCAL = ID_LOCAL "
+    					+"INNER JOIN REUNIAO "
+    					+"ON IDSALA = ID_SALA "
+    					+"INNER JOIN USUARIO__REUNIAO "
+    					+"ON ID_REUNIAO = IDREUNIAO "
+    					+"WHERE PARTICIPACAO = ? AND ID_USUARIO = ? ");
+    			ps.setString(1, "SIM");
+    			ps.setInt(2, coordenador.getIdUser());
+    			rt = ps.executeQuery();
+    			while(rt.next()) { 
+    				//String local, sala, nome, periodo, confirmacao, piso , data;
+    				linhasTbReunioesConf[0] = rt.getInt("IDREUNIAO");
+    				linhasTbReunioesConf[1] = rt.getString("DATA_REUNIAO");
+    				linhasTbReunioesConf[2] = rt.getString("PERIODO");
+    				linhasTbReunioesConf[3] = rt.getString("NOME_LOCAL");
+    				linhasTbReunioesConf[4] = rt.getString("CIDADE");
+    				linhasTbReunioesConf[5] = rt.getString("NOME_SALA");
+    				linhasTbReunioesConf[6] = rt.getString("PISO");
+    				modeloReunioesConf.addRow(linhasTbReunioesConf);
+    		}
+    		
+    	} catch (SQLException eVisualizarReConf) {
+    		eVisualizarReConf.printStackTrace();
+    	 }
+		}
+	}
 }

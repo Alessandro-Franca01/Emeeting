@@ -1735,6 +1735,7 @@ public class UsuarioComum extends javax.swing.JFrame {
 			putValue(SHORT_DESCRIPTION, "Confirmar Participação");
 		}
 		public void actionPerformed(ActionEvent e) {
+			// AJUSTES TERMINADOS, ULTIMOS TESTES
 			int idReuniao = Integer.parseInt(tfConfParIdReuniao.getText());
 			String confirmacao = null; 
 			if(rdbtnNo.isSelected()) {
@@ -1742,7 +1743,23 @@ public class UsuarioComum extends javax.swing.JFrame {
 			}else if(rdbtnSim.isSelected()) {
 				confirmacao = "SIM";
 			}
-			usuario.confirmarParticipante(conect, rt, idReuniao,usuario.getIdUser() ,confirmacao);
+			String participacao = usuario.confirmarParticipante(conect, rt, idReuniao,usuario.getIdUser() ,confirmacao);
+			if(participacao.equalsIgnoreCase("aguardando")) {
+				// Confirmado!
+				if(confirmacao.equalsIgnoreCase("nao")) {
+					JOptionPane.showMessageDialog(rootPane, "Participação confirmada!");
+				}else {
+					JOptionPane.showMessageDialog(rootPane, "Participação negada!");
+				}
+				System.out.println("Confirmado");
+			}else if(participacao.equalsIgnoreCase("nao")) {
+				JOptionPane.showMessageDialog(rootPane, "Participação já foi negada!");				
+			}else if(participacao == null) {
+				JOptionPane.showMessageDialog(rootPane, "Usuario nao convidado!!");
+			}else {
+				// Já está confirmado!
+				JOptionPane.showMessageDialog(rootPane, "Usuario Já está confirmado!!");
+			}
 		}
 	}
 	private class SwingAction_11 extends AbstractAction {
@@ -1804,8 +1821,6 @@ public class UsuarioComum extends javax.swing.JFrame {
 		}
 		public void actionPerformed(ActionEvent e) {
 			try { 
-				//  REVER ISSO DE NOVO -->> REVISTO, MAS NÃO TESTEI TUDO!
-				// erro na query!! COLUMAS COM MESMO NOME(ID_USUARIO) --> MUDANÇAS FEITAS EM TODO O PROJETO (PROPRIETARIO)!!
 				ps = conect.prepareStatement("SELECT PERIODO, DATA_REUNIAO, NOME_SALA, PISO, NOME_LOCAL, CIDADE, PARTICIPACAO "  
 						+"FROM SALA "
 						+"INNER JOIN LOCAL "
